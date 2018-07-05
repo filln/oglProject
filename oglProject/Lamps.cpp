@@ -5,16 +5,53 @@ Lamps::Lamps(){
 	this->position = glm::vec3(1.2f, 1.0f, 1.0f);
 	this->firstPosition = this->position;
 
-	this->color = glm::vec3(1.0f, 1.0f, 1.0f);
-	this->ambientStrength = 0.05f;
-	SetColors();
+	glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
+	SetColors(color);
 
-	this->distance = 50;
-	this->constant = 1.0f;
-	this->linear = 0.09f;
-	this->quadratic = 0.032f;
+	GLuint distance = 50;
+	SetDistance(distance);
+
 	this->cutOff = glm::cos(glm::radians(12.5f));
 	this->outerCutOff = glm::cos(glm::radians(17.5f));
+}
+
+//dirLamp is TRUE, pointLamp is FALSE
+Lamps::Lamps(const glm::vec3 position, const glm::vec3 color, GLboolean isDirection) {
+	if (isDirection) {
+		this->direction = position;
+		this->firstPosition = position;
+
+		SetColors(color);
+
+		GLuint distance = 50;
+		SetDistance(distance);
+	}
+	else {
+		this->position = position;
+		this->firstPosition = position;
+
+		SetColors(color);
+
+		GLuint distance = 50;
+		SetDistance(distance);
+	}
+}
+//spotLamp
+Lamps::Lamps(
+	const glm::vec3 position, const glm::vec3 direction, const glm::vec3 color,
+	const GLfloat cutOff, const GLfloat outerCutOff
+) {
+	this->direction = direction;
+	this->position = position;
+	this->firstPosition = position;
+
+	SetColors(color);
+
+	GLuint distance = 50;
+	SetDistance(distance);
+
+	this->cutOff = glm::cos(glm::radians(cutOff));
+	this->outerCutOff = glm::cos(glm::radians(outerCutOff));
 }
 
 void Lamps::Rotate(glm::vec3 position) {
@@ -105,15 +142,20 @@ void Lamps::SetDistance(GLuint distance) {
 			break;
 		}
 		default: {
+			this->distance = 50;
+			this->linear = 0.09f;
+			this->quadratic = 0.032f;
 			break;
 		}
 	}
 }
 
-void Lamps::SetColors() {
-	this->ambient = this->color * glm::vec3(1.0f) * this->ambientStrength;
-	this->diffuse = this->color * glm::vec3(1.0f);
-	this->specular = this->color * glm::vec3(1.0f);
+void Lamps::SetColors(glm::vec3 color) {
+	this->ambientStrength = 0.05f;
+	this->color = color;
+	this->ambient = color * glm::vec3(1.0f) * this->ambientStrength;
+	this->diffuse = color * glm::vec3(1.0f);
+	this->specular = color * glm::vec3(1.0f);
 }
 
 Lamps::~Lamps()

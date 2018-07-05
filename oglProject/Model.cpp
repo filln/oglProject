@@ -32,7 +32,7 @@ void Model::DrawTexModel(
 	shader.setFloat("material.shininessTex", shininessTex);
 	if (modelLamps.dirLamps)	shader.setDirLamps(modelLamps.dirLamps, modelLamps.countDirLamps);
 	if (modelLamps.pointLamps)	shader.setPointLamps(modelLamps.pointLamps, modelLamps.countPointLamps);
-	if (modelLamps.spotLamps)	shader.setSpotLamps(modelLamps.spotLamps, modelLamps.countSpotLamps, modelLamps.direction, modelLamps.position);
+	if (modelLamps.spotLamps)	shader.setSpotLamps(modelLamps.spotLamps, modelLamps.countSpotLamps);
 	this->Draw(shader);
 }
 //with users color

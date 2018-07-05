@@ -25,7 +25,7 @@ GLuint TextureFromFile(const char* path, const string& directory);
 struct ModelLamps {
 	Lamps* dirLamps; GLuint countDirLamps;
 	Lamps* pointLamps; GLuint countPointLamps;
-	Lamps* spotLamps; GLuint countSpotLamps; glm::vec3 direction; glm::vec3 position;
+	Lamps* spotLamps; GLuint countSpotLamps;
 };
 class Model
 {

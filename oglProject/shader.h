@@ -26,9 +26,9 @@ public:
 	void setFloat(const GLchar* chName, float name);
 	void setVec3(const GLchar* chName, glm::vec3 name);
 	void setMat4(const GLchar* chName, glm::mat4 name);
-	void setPointLights(Lamps* lamps, const GLuint countLamps);
-	void setDirLights(Lamps* lamps, const GLuint countLamps);
-	void setSpotLights(Lamps* lamps, const GLuint countLamps, glm::vec3 direction, glm::vec3 position);
+	void setDirLamps(Lamps* lamps, const GLuint countLamps);
+	void setPointLamps(Lamps* lamps, const GLuint countLamps);
+	void setSpotLamps(Lamps* lamps, const GLuint countLamps);
 	~Shader();
 private:
 	string

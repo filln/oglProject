@@ -75,7 +75,15 @@ void Shader::setMat4(const GLchar* chName, glm::mat4 name) {
 	glUniformMatrix4fv(glGetUniformLocation(this->Program, chName), 1, GL_FALSE, glm::value_ptr(name));
 }
 
-void Shader::setPointLights(Lamps* lamps, const GLuint countLamps) {
+void Shader::setDirLamps(Lamps* lamps, const GLuint countLamps) {
+	for (GLuint i = 0; i < countLamps; i++) {
+		this->setVec3((this->dirLights + to_string(i) + this->direction).c_str(), (lamps + i)->direction);
+		this->setVec3((this->dirLights + to_string(i) + this->ambient).c_str(), (lamps + i)->ambient);
+		this->setVec3((this->dirLights + to_string(i) + this->diffuse).c_str(), (lamps + i)->diffuse);
+		this->setVec3((this->dirLights + to_string(i) + this->specular).c_str(), (lamps + i)->specular);
+	}
+}
+void Shader::setPointLamps(Lamps* lamps, const GLuint countLamps) {
 	for (GLuint i = 0; i < countLamps; i++) {
 		this->setVec3((this->pointLights + to_string(i) + this->position).c_str(), (lamps + i)->position);
 		this->setVec3((this->pointLights + to_string(i) + this->ambient).c_str(), (lamps + i)->ambient);
@@ -86,20 +94,10 @@ void Shader::setPointLights(Lamps* lamps, const GLuint countLamps) {
 		this->setFloat((this->pointLights + to_string(i) + this->quadratic).c_str(), (lamps + i)->quadratic);
 	}
 }
-
-void Shader::setDirLights(Lamps* lamps, const GLuint countLamps) {
+void Shader::setSpotLamps(Lamps* lamps, const GLuint countLamps) {
 	for (GLuint i = 0; i < countLamps; i++) {
-		this->setVec3((this->dirLights + to_string(i) + this->direction).c_str(), (lamps + i)->direction);
-		this->setVec3((this->dirLights + to_string(i) + this->ambient).c_str(), (lamps + i)->ambient);
-		this->setVec3((this->dirLights + to_string(i) + this->diffuse).c_str(), (lamps + i)->diffuse);
-		this->setVec3((this->dirLights + to_string(i) + this->specular).c_str(), (lamps + i)->specular);
-	}
-}
-
-void Shader::setSpotLights(Lamps* lamps, const GLuint countLamps, glm::vec3 direction, glm::vec3 position) {
-	for (GLuint i = 0; i < countLamps; i++) {
-		this->setVec3((this->spotLights + to_string(i) + this->direction).c_str(), direction);
-		this->setVec3((this->spotLights + to_string(i) + this->position).c_str(), position);
+		this->setVec3((this->spotLights + to_string(i) + this->direction).c_str(), (lamps + i)->direction);
+		this->setVec3((this->spotLights + to_string(i) + this->position).c_str(), (lamps + i)->position);
 		this->setVec3((this->spotLights + to_string(i) + this->ambient).c_str(), (lamps + i)->ambient);
 		this->setVec3((this->spotLights + to_string(i) + this->diffuse).c_str(), (lamps + i)->diffuse);
 		this->setVec3((this->spotLights + to_string(i) + this->specular).c_str(), (lamps + i)->specular);
