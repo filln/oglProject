@@ -20,18 +20,15 @@ void do_movement();
 
 const GLchar
 *nanosuitPath = "tex/nanosuit/nanosuit.obj",
-*nanosuitVertexPath = "shaders/nanosuit.vs",
-*nanosuitFragmentPath = "shaders/nanosuit.fs",
-
 *earthPath = "tex/earth/earth.obj",
-
 *spherePath = "tex/sphere.blend",
-*lampSphereVertexPath = "shaders/lampSphere.vs",
-*lampSphereFragmentPath = "shaders/lampSphere.fs",
-
 *cubePath = "tex/container/cube.obj",
 *floorPath = "tex/floor/floor.obj",
 
+*nanosuitVertexPath = "shaders/nanosuit.vs",
+*nanosuitFragmentPath = "shaders/nanosuit.fs",
+*lampSphereVertexPath = "shaders/lampSphere.vs",
+*lampSphereFragmentPath = "shaders/lampSphere.fs",
 *outLineVertexPath = "shaders/outLine.vs",
 *outLineFragmentPath = "shaders/outLine.fs";
 
