@@ -23,10 +23,10 @@ const GLchar
 *earthPath = "tex/earth/earth.obj",
 *spherePath = "tex/sphere.blend",
 *cubePath = "tex/container/cube.obj",
-*floorPath = "tex/floor/floor.obj",
+*floorPath = "tex/floor/floor.blend",
 
-*nanosuitVertexPath = "shaders/nanosuit.vs",
-*nanosuitFragmentPath = "shaders/nanosuit.fs",
+*textureVertexPath = "shaders/textures.vs",
+*textureFragmentPath = "shaders/textures.fs",
 *lampSphereVertexPath = "shaders/lampSphere.vs",
 *lampSphereFragmentPath = "shaders/lampSphere.fs",
 *outLineVertexPath = "shaders/outLine.vs",
@@ -89,13 +89,13 @@ int main() {
 	modelLamps.countSpotLamps = 0;
 
 	Shader
-		nanosuitShader(nanosuitVertexPath, nanosuitFragmentPath),
+		textureShader(textureVertexPath, textureFragmentPath),
 		lampSphereShader(lampSphereVertexPath, lampSphereFragmentPath),
 		outLineShader(outLineVertexPath, outLineFragmentPath);
+	Model floor(floorPath);
 	Model nanosuit(nanosuitPath);
 	Model sphere(spherePath);
 	Model cube(cubePath);
-	Model floor(floorPath);
 
 
 	while (!glfwWindowShouldClose(window)) {
@@ -113,9 +113,15 @@ int main() {
 		glm::mat4 view, projection;
 		view = camera.GetViewMatrix();
 		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
-		//nanosuit
-
 		//floor
+		floor.DrawTexModel(
+			textureShader,
+			glm::vec3(0.0f, -1.0f, 0.0f), 90, 0, 0, glm::vec3(1.0f),
+			view, projection, camera.Position, 128,
+			modelLamps,
+			false, nullptr, glm::vec3(0), 0, glm::vec3(0)
+		);
+		//nanosuit
 
 		//pointLamps
 
