@@ -1,6 +1,5 @@
 #version 460 core
 
-in vec2 TexCoords;
 in vec3 
 	Normal, FragPos;
 out vec4 outColor;
@@ -15,7 +14,7 @@ struct Material{
 
 struct DirLight{
 	vec3 
-		direction,
+		position,
 		ambient,
 		diffuse,
 		specular;
@@ -88,7 +87,7 @@ void main(){
 }
 
 vec3 calcDirLight(DirLight dirLight, Material material, vec3 norm, vec3 viewDir){
-	vec3 lightDir = normalize(dirLight.direction);
+	vec3 lightDir = normalize(dirLight.position);
 	float diff = max(dot(norm, lightDir), 0.0f);
 
 	vec3 reflectDir = reflect(-lightDir, norm);

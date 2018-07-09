@@ -14,7 +14,7 @@ struct Material{
 
 struct DirLight{
 	vec3 
-		direction,
+		position,
 		ambient,
 		diffuse,
 		specular;
@@ -54,6 +54,10 @@ uniform Material material;
 uniform	DirLight dirLights[dirLightsCount];
 uniform PointLight pointLights[pointLightsCount]; 
 uniform	SpotLight spotLights[spotLightsCount];
+uniform unsigned int 
+	dirLampsCount,
+	pointLampsCount,
+	spotLampsCount;
 uniform	vec3 viewPos;
 
 vec3
@@ -71,13 +75,15 @@ void main(){
 		norm = normalize(Normal),
 		viewDir = normalize(viewPos - FragPos),
 		result;
-
-	for(int i = 0; i < dirLightsCount; ++i)
+	if(dirLampsCount > dirLightsCount) dirLampsCount = dirLightsCount;
+	if(pointLampsCount > pointLightsCount) pointLampsCount = pointLightsCount;
+	if(spotLampsCount > spotLightsCount) pointLampsCount = pointLightsCount;
+	for(int i = 0; i < dirLampsCount; ++i)
 		result += calcDirLight(dirLights[i], material, norm, viewDir);	
-	for(int i = 0; i < pointLightsCount; ++i)
+	for(int i = 0; i < pointLampsCount; ++i)
 		result += calcPointLight(pointLights[i], material, norm, viewDir, FragPos);		
-//	for(int i = 0; i < spotLightsCount; ++i)
-//		result += calcSpotLight(spotLights[i], material, norm, viewDir, FragPos);	
+	for(int i = 0; i < spotLightsCount; ++i)
+		result += calcSpotLight(spotLights[i], material, norm, viewDir, FragPos);	
 
 	outColor = vec4(result, 1.0f);
 
@@ -87,7 +93,7 @@ void main(){
 }
 
 vec3 calcDirLight(DirLight dirLight, Material material, vec3 norm, vec3 viewDir){
-	vec3 lightDir = normalize(dirLight.direction);
+	vec3 lightDir = normalize(dirLight.position);
 	float diff = max(dot(norm, lightDir), 0.0f);
 
 	vec3 reflectDir = reflect(-lightDir, norm);

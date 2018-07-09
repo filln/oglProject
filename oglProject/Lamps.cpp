@@ -15,18 +15,8 @@ Lamps::Lamps(){
 	this->outerCutOff = glm::cos(glm::radians(17.5f));
 }
 
-//dirLamp is TRUE, pointLamp is FALSE
-Lamps::Lamps(const glm::vec3 position, const glm::vec3 color, GLboolean isDirection) {
-	if (isDirection) {
-		this->direction = position;
-		this->firstPosition = position;
-
-		SetColors(color);
-
-		GLuint distance = 50;
-		SetDistance(distance);
-	}
-	else {
+//dirLamp, pointLamp
+Lamps::Lamps(const glm::vec3 position, const glm::vec3 color) {
 		this->position = position;
 		this->firstPosition = position;
 
@@ -34,7 +24,6 @@ Lamps::Lamps(const glm::vec3 position, const glm::vec3 color, GLboolean isDirect
 
 		GLuint distance = 50;
 		SetDistance(distance);
-	}
 }
 //spotLamp
 Lamps::Lamps(

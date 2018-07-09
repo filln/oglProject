@@ -29,6 +29,8 @@ const GLchar
 *textureFragmentPath = "shaders/textures.fs",
 *lampSphereVertexPath = "shaders/lampSphere.vs",
 *lampSphereFragmentPath = "shaders/lampSphere.fs",
+*simpleVertexPath = "shaders/simple.vs",
+*simpleFragmentPath = "shaders/simple.fs",
 *outLineVertexPath = "shaders/outLine.vs",
 *outLineFragmentPath = "shaders/outLine.fs";
 
@@ -78,8 +80,8 @@ int main() {
 	glViewport(0, 0, width, height);
 
 	camera.FPScam = true;
-	Lamps dirLamp(glm::vec3(1.2f, 50.0f, -20.0f), glm::vec3(1.0f, 0.98f, 0.75f), true);
-	Lamps pointLamp(glm::vec3(1.2f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), false);
+	Lamps dirLamp(glm::vec3(1.2f, 50.0f, -20.0f), glm::vec3(1.0f, 0.98f, 0.75f));
+	Lamps pointLamp(glm::vec3(1.2f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 	ModelLamps modelLamps;
 	modelLamps.dirLamps = &dirLamp;
 	modelLamps.countDirLamps = 1;
@@ -91,6 +93,7 @@ int main() {
 	Shader
 		textureShader(textureVertexPath, textureFragmentPath),
 		lampSphereShader(lampSphereVertexPath, lampSphereFragmentPath),
+		simpleShader(simpleVertexPath, simpleFragmentPath),
 		outLineShader(outLineVertexPath, outLineFragmentPath);
 	Model floor(floorPath);
 	Model nanosuit(nanosuitPath);
@@ -121,11 +124,18 @@ int main() {
 			modelLamps,
 			false, nullptr, glm::vec3(0), 0, glm::vec3(0)
 		);
-		//nanosuit
-
+		//dirLamps
+		sphere.DrawColorModel(
+			simpleShader,
+			dirLamp.position, 0, 0, 0, glm::vec3(1.0f),
+			view, projection,
+			dirLamp.color,
+			false, nullptr, glm::vec3(0), 0, glm::vec3(0)
+		);
 		//pointLamps
 
-		//dirLamps
+		//nanosuit
+
 
 		//cube
 		glStencilFunc(GL_ALWAYS, 1, 1);

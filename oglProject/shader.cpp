@@ -77,7 +77,7 @@ void Shader::setMat4(const GLchar* chName, glm::mat4 name) {
 
 void Shader::setDirLamps(Lamps* lamps, const GLuint countLamps) {
 	for (GLuint i = 0; i < countLamps; i++) {
-		this->setVec3((this->dirLights + to_string(i) + this->direction).c_str(), (lamps + i)->direction);
+		this->setVec3((this->dirLights + to_string(i) + this->position).c_str(), (lamps + i)->position);
 		this->setVec3((this->dirLights + to_string(i) + this->ambient).c_str(), (lamps + i)->ambient);
 		this->setVec3((this->dirLights + to_string(i) + this->diffuse).c_str(), (lamps + i)->diffuse);
 		this->setVec3((this->dirLights + to_string(i) + this->specular).c_str(), (lamps + i)->specular);

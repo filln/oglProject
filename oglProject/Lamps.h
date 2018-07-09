@@ -12,8 +12,8 @@ class Lamps
 {
 public:
 	Lamps();
-	//dirLamp is TRUE, pointLamp is FALSE
-	Lamps(const glm::vec3 position, const glm::vec3 color, GLboolean isDirection);
+	//dirLamp, pointLamp
+	Lamps(const glm::vec3 position, const glm::vec3 color);
 	//spotLamp
 	Lamps(
 		const glm::vec3 position, const glm::vec3 direction, const glm::vec3 color,
