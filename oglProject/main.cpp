@@ -31,6 +31,8 @@ const GLchar
 *lampSphereFragmentPath = "shaders/lampSphere.fs",
 *simpleVertexPath = "shaders/simple.vs",
 *simpleFragmentPath = "shaders/simple.fs",
+*normalOutLineVertexPath = "shaders/normalOutLine.vs",
+*normalOutLineFragmentPath = "shaders/normalOutLine.fs",
 *outLineVertexPath = "shaders/outLine.vs",
 *outLineFragmentPath = "shaders/outLine.fs";
 
@@ -84,16 +86,17 @@ int main() {
 	Lamps pointLamp(glm::vec3(1.2f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 	ModelLamps modelLamps;
 	modelLamps.dirLamps = &dirLamp;
-	modelLamps.countDirLamps = 1;
+	modelLamps.dirLampsCount = 1;
 	modelLamps.pointLamps = &pointLamp;
-	modelLamps.countPointLamps = 1;
+	modelLamps.pointLampsCount = 1;
 	modelLamps.spotLamps = nullptr;
-	modelLamps.countSpotLamps = 0;
+	modelLamps.spotLampsCount = 0;
 
 	Shader
 		textureShader(textureVertexPath, textureFragmentPath),
 		lampSphereShader(lampSphereVertexPath, lampSphereFragmentPath),
 		simpleShader(simpleVertexPath, simpleFragmentPath),
+		normalOutLineShader(normalOutLineVertexPath, normalOutLineFragmentPath),
 		outLineShader(outLineVertexPath, outLineFragmentPath);
 	Model floor(floorPath);
 	Model nanosuit(nanosuitPath);
@@ -108,6 +111,9 @@ int main() {
 
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_STENCIL_TEST);
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -117,6 +123,7 @@ int main() {
 		view = camera.GetViewMatrix();
 		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
 		//floor
+		glDisable(GL_CULL_FACE);
 		floor.DrawTexModel(
 			textureShader,
 			glm::vec3(0.0f, -1.0f, 0.0f), 90, 0, 0, glm::vec3(1.0f),
@@ -124,6 +131,7 @@ int main() {
 			modelLamps,
 			false, nullptr, glm::vec3(0), 0, glm::vec3(0)
 		);
+		glEnable(GL_CULL_FACE);
 		//dirLamps
 		sphere.DrawColorModel(
 			simpleShader,
@@ -133,27 +141,39 @@ int main() {
 			false, nullptr, glm::vec3(0), 0, glm::vec3(0)
 		);
 		//pointLamps
-
-		//nanosuit
-
-
+		sphere.DrawColorModel(
+			simpleShader,
+			pointLamp.position, 0, 0, 0, glm::vec3(0.1f),
+			view, projection,
+			pointLamp.color,
+			false, nullptr, glm::vec3(0), 0, glm::vec3(0)
+		);
 		//cube
-		glStencilFunc(GL_ALWAYS, 1, 1);
-		glStencilMask(0);
 			//#1
-
+		cube.DrawTexModel(
+			textureShader,
+			glm::vec3(1.0f, -0.699f, 0.0f), 0, 0, 0, glm::vec3(0.3f),
+			view, projection, camera.Position, 64, 
+			modelLamps,
+			false, nullptr, glm::vec3(0), 0, glm::vec3(0)
+		);
 			//#2
+		cube.DrawTexModel(
+			textureShader,
+			glm::vec3(2.0f, -0.699f, -1.0f), 0, 0, 0, glm::vec3(0.3f),
+			view, projection, camera.Position, 64,
+			modelLamps,
+			false, nullptr, glm::vec3(0), 0, glm::vec3(0)
+		);
+		//nanosuit
+		nanosuit.DrawTexModel(
+			textureShader,
+			glm::vec3(0.0f, -1.0f, 0.0f), 0, 0, 0, glm::vec3(0.1f),
+			view, projection, camera.Position, 64,
+			modelLamps,
+			true, &normalOutLineShader, glm::vec3(0.1f), 0.1f, glm::vec3(1.0f, 0.5f, 0.0f)
+		);
 
-		//outLine
-		glStencilFunc(GL_NOTEQUAL, 0, 1);
-		glStencilMask(1);
-		glDisable(GL_DEPTH_TEST);
-			//#1
-
-			//#2
-
-		glStencilMask(0);
-		glEnable(GL_DEPTH_TEST);
 
 		glfwSwapBuffers(window);
 	}

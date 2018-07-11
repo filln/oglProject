@@ -30,9 +30,9 @@ void Model::DrawTexModel(
 	shader.setVec3("viewPos", viewPos);
 	//Materials
 	shader.setFloat("material.shininessTex", shininessTex);
-	if (modelLamps.dirLamps)	shader.setDirLamps(modelLamps.dirLamps, modelLamps.countDirLamps);
-	if (modelLamps.pointLamps)	shader.setPointLamps(modelLamps.pointLamps, modelLamps.countPointLamps);
-	if (modelLamps.spotLamps)	shader.setSpotLamps(modelLamps.spotLamps, modelLamps.countSpotLamps);
+	if (modelLamps.dirLamps)	shader.setDirLamps(modelLamps.dirLamps, modelLamps.dirLampsCount);
+	if (modelLamps.pointLamps)	shader.setPointLamps(modelLamps.pointLamps, modelLamps.pointLampsCount);
+	if (modelLamps.spotLamps)	shader.setSpotLamps(modelLamps.spotLamps, modelLamps.spotLampsCount);
 	this->Draw(shader);
 }
 //with users color
@@ -82,9 +82,9 @@ void Model::DrawMatModel(
 	shader.setVec3("material.diffuse", material.diffuse);
 	shader.setVec3("material.specular", material.specular);
 	shader.setFloat("material.shininess", material.shininess);
-	if (modelLamps.dirLamps)	shader.setDirLamps(modelLamps.dirLamps, modelLamps.countDirLamps);
-	if (modelLamps.pointLamps)	shader.setPointLamps(modelLamps.pointLamps, modelLamps.countPointLamps);
-	if (modelLamps.spotLamps)	shader.setSpotLamps(modelLamps.spotLamps, modelLamps.countSpotLamps);
+	if (modelLamps.dirLamps)	shader.setDirLamps(modelLamps.dirLamps, modelLamps.dirLampsCount);
+	if (modelLamps.pointLamps)	shader.setPointLamps(modelLamps.pointLamps, modelLamps.pointLampsCount);
+	if (modelLamps.spotLamps)	shader.setSpotLamps(modelLamps.spotLamps, modelLamps.spotLampsCount);
 	this->Draw(shader);
 }
 //with outline

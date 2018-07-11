@@ -26,14 +26,17 @@ public:
 	void setFloat(const GLchar* chName, float name);
 	void setVec3(const GLchar* chName, glm::vec3 name);
 	void setMat4(const GLchar* chName, glm::mat4 name);
-	void setDirLamps(Lamps* lamps, const GLuint countLamps);
-	void setPointLamps(Lamps* lamps, const GLuint countLamps);
-	void setSpotLamps(Lamps* lamps, const GLuint countLamps);
+	void setDirLamps(Lamps* lamps, const GLuint lampsCount);
+	void setPointLamps(Lamps* lamps, const GLuint lampsCount);
+	void setSpotLamps(Lamps* lamps, const GLuint lampsCount);
 	~Shader();
 private:
 	string
-		pointLights = "pointLights[",
+		dirLampsCount = "dirLampsCount",
+		pointLampsCount = "pointLampsCount",
+		spotLampsCount = "spotLampsCount",
 		dirLights = "dirLights[",
+		pointLights = "pointLights[",
 		spotLights = "spotLights[",
 		direction = "].direction",
 		position = "].position",

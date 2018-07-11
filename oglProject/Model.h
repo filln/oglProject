@@ -23,9 +23,9 @@ using std::endl;
 
 GLuint TextureFromFile(const char* path, const string& directory);
 struct ModelLamps {
-	Lamps* dirLamps; GLuint countDirLamps;
-	Lamps* pointLamps; GLuint countPointLamps;
-	Lamps* spotLamps; GLuint countSpotLamps;
+	Lamps* dirLamps; GLuint dirLampsCount;
+	Lamps* pointLamps; GLuint pointLampsCount;
+	Lamps* spotLamps; GLuint spotLampsCount;
 };
 class Model
 {

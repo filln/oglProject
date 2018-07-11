@@ -2,7 +2,8 @@
 
 in vec2 TexCoords;
 in vec3 
-	Normal, FragPos;
+	Normal, 
+	FragPos;
 out vec4 outColor;
 
 struct Material{
@@ -54,7 +55,7 @@ uniform Material material;
 uniform	DirLight dirLights[dirLightsCount];
 uniform PointLight pointLights[pointLightsCount]; 
 uniform	SpotLight spotLights[spotLightsCount];
-uniform unsigned int 
+uniform int 
 	dirLampsCount,
 	pointLampsCount,
 	spotLampsCount;
@@ -75,14 +76,19 @@ void main(){
 		norm = normalize(Normal),
 		viewDir = normalize(viewPos - FragPos),
 		result;
-	if(dirLampsCount > dirLightsCount) dirLampsCount = dirLightsCount;
-	if(pointLampsCount > pointLightsCount) pointLampsCount = pointLightsCount;
-	if(spotLampsCount > spotLightsCount) pointLampsCount = pointLightsCount;
-	for(int i = 0; i < dirLampsCount; ++i)
+	int 
+		maxDirLampsCount = dirLampsCount,
+		maxPointLampsCount = pointLampsCount,
+		maxSpotLampsCount = spotLampsCount;
+	if(maxDirLampsCount > dirLightsCount) maxDirLampsCount = dirLightsCount;
+	if(maxPointLampsCount > pointLightsCount) maxPointLampsCount = pointLightsCount;
+	if(maxSpotLampsCount > spotLightsCount) maxSpotLampsCount = pointLightsCount;
+
+	for(int i = 0; i < maxDirLampsCount; ++i)
 		result += calcDirLight(dirLights[i], material, norm, viewDir);	
-	for(int i = 0; i < pointLampsCount; ++i)
+	for(int i = 0; i < maxPointLampsCount; ++i)
 		result += calcPointLight(pointLights[i], material, norm, viewDir, FragPos);		
-	for(int i = 0; i < spotLightsCount; ++i)
+	for(int i = 0; i < maxSpotLampsCount; ++i)
 		result += calcSpotLight(spotLights[i], material, norm, viewDir, FragPos);	
 
 	outColor = vec4(result, 1.0f);

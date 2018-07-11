@@ -7,6 +7,5 @@ uniform mat4
 	model, view, projection;
 uniform float rate;
 void main(){
-	TexCoords = inTexCoords;
 	gl_Position = projection * view * model * vec4(position + normal * rate, 1.0f);
 }

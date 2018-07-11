@@ -3,7 +3,7 @@
 out vec4 outColor;
 uniform vec3 inColor;
 void main(){
-	outColor = vec4(inColor, 0.2f);
+	outColor = vec4(inColor, 0.25f);
 }
 
 
