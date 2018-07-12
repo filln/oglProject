@@ -140,7 +140,7 @@ void Lamps::SetDistance(GLuint distance) {
 }
 
 void Lamps::SetColors(glm::vec3 color) {
-	this->ambientStrength = 0.25f;
+	this->ambientStrength = 0.15f;
 	this->color = color;
 	this->ambient = color * glm::vec3(1.0f) * this->ambientStrength;
 	this->diffuse = color * glm::vec3(1.0f);

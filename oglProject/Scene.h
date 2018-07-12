@@ -13,26 +13,12 @@ class Scene
 {
 public:
 	Scene();
-	void DrawScene1(Camera& camera);
+	void DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys);
 	~Scene();
 private:
-	const GLchar
-		*nanosuitPath = "tex/nanosuit/nanosuit.obj",
-		*earthPath = "tex/earth/earth.obj",
-		*spherePath = "tex/sphere.blend",
-		*cubePath = "tex/container/cube.obj",
-		*floorPath = "tex/floor/floor.blend",
-
-		*textureVertexPath = "shaders/textures.vs",
-		*textureFragmentPath = "shaders/textures.fs",
-		*lampSphereVertexPath = "shaders/lampSphere.vs",
-		*lampSphereFragmentPath = "shaders/lampSphere.fs",
-		*simpleVertexPath = "shaders/simple.vs",
-		*simpleFragmentPath = "shaders/simple.fs",
-		*normalOutLineVertexPath = "shaders/normalOutLine.vs",
-		*normalOutLineFragmentPath = "shaders/normalOutLine.fs",
-		*outLineVertexPath = "shaders/outLine.vs",
-		*outLineFragmentPath = "shaders/outLine.fs";
-	void do_movement(Camera& camera);
+	GLfloat
+		deltaTime = 0.0f,
+		lastFrame = 0.0f;
+	void do_movement(Camera& camera, bool* keys);
 };
 
