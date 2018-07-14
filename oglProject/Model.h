@@ -33,21 +33,21 @@ public:
 	Model(const char* path);
 	void Draw(Shader& shader);
 	//without outline
-	//with textures
+		//with textures
 	void DrawTexModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
 		glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, GLint shininessTex,
 		ModelLamps& modelLamps
 	);
-	//with users color
+		//with users color
 	void DrawColorModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
 		glm::mat4 view, glm::mat4 projection,
 		glm::vec3 inColor
 	);
-	//with material
+		//with material
 	void DrawMatModel(
 		Materials& material,
 		Shader& shader,
@@ -56,7 +56,7 @@ public:
 		ModelLamps& modelLamps
 	);
 	//with outline
-	//with textures
+		//with textures
 	void DrawTexModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
@@ -64,7 +64,7 @@ public:
 		ModelLamps& modelLamps,
 		GLboolean isOutLine, Shader* shaderOutLine, glm::vec3 scaleOutLine, GLfloat rateOutLine, glm::vec3 inColorOutLine
 	);
-	//with users color
+		//with users color
 	void DrawColorModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
@@ -72,7 +72,7 @@ public:
 		glm::vec3 inColor,
 		GLboolean isOutLine, Shader* shaderOutLine, glm::vec3 scaleOutLine, GLfloat rateOutLine, glm::vec3 inColorOutLine
 	);
-	//with material
+		//with material
 	void DrawMatModel(
 		Materials& material,
 		Shader& shader,
@@ -80,6 +80,32 @@ public:
 		glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos,
 		ModelLamps& modelLamps,
 		GLboolean isOutLine, Shader* shaderOutLine, glm::vec3 scaleOutLine, GLfloat rateOutLine, glm::vec3 inColorOutLine
+	);
+		//disable outline
+			//with textures
+	void DrawTexModel(
+		Shader& shader,
+		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
+		glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, GLint shininessTex,
+		ModelLamps& modelLamps,
+		GLboolean isOutLine
+	);
+			//with users color
+	void DrawColorModel(
+		Shader& shader,
+		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
+		glm::mat4 view, glm::mat4 projection,
+		glm::vec3 inColor,
+		GLboolean isOutLine
+	);
+			//with material
+	void DrawMatModel(
+		Materials& material,
+		Shader& shader,
+		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
+		glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos,
+		ModelLamps& modelLamps,
+		GLboolean isOutLine
 	);
 	~Model();
 private:

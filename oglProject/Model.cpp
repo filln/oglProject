@@ -88,7 +88,7 @@ void Model::DrawMatModel(
 	this->Draw(shader);
 }
 //with outline
-//with textures
+	//with textures
 void Model::DrawTexModel(
 	Shader& shader,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
@@ -134,7 +134,7 @@ void Model::DrawTexModel(
 	}
 	glStencilMask(1);
 }
-//with users color
+	//with users color
 void Model::DrawColorModel(
 	Shader& shader,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
@@ -180,7 +180,7 @@ void Model::DrawColorModel(
 	}
 	glStencilMask(1);
 }
-//with material
+	//with material
 void Model::DrawMatModel(
 	Materials& material,
 	Shader& shader,
@@ -228,6 +228,63 @@ void Model::DrawMatModel(
 		);
 	}
 	glStencilMask(1);
+}
+	//disable outline
+		//with textures
+void Model::DrawTexModel(
+	Shader& shader,
+	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
+	glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, GLint shininessTex,
+	ModelLamps& modelLamps,
+	GLboolean isOutLine
+) {
+	if (!isOutLine) {
+		this->DrawTexModel(
+			shader,
+			translate, angleX, angleY, angleZ, scale,
+			view, projection, viewPos, shininessTex,
+			modelLamps,
+			isOutLine, nullptr, glm::vec3(0), 0, glm::vec3(0)
+		);
+	}
+}
+		//with users color
+void Model::DrawColorModel(
+	Shader& shader,
+	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
+	glm::mat4 view, glm::mat4 projection,
+	glm::vec3 inColor,
+	GLboolean isOutLine
+) {
+	if (!isOutLine) {
+		this->DrawColorModel(
+			shader,
+			translate, angleX, angleY, angleZ, scale,
+			view, projection,
+			inColor,
+			isOutLine, nullptr, glm::vec3(0), 0, glm::vec3(0)
+		);
+	}
+}
+		//with material
+void Model::DrawMatModel(
+	Materials& material,
+	Shader& shader,
+	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
+	glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos,
+	ModelLamps& modelLamps,
+	GLboolean isOutLine
+) {
+	if (!isOutLine) {
+		this->DrawMatModel(
+			material,
+			shader,
+			translate, angleX, angleY, angleZ, scale,
+			view, projection, viewPos,
+			modelLamps,
+			isOutLine, nullptr, glm::vec3(0), 0, glm::vec3(0)
+		);
+	}
 }
 //outline with color
 void Model::drawOutLineModel(

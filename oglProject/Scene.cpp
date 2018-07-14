@@ -14,6 +14,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		*cubePath = "tex/container/cube.obj",
 		*floorPath = "tex/floor/floor.obj",
 		*grassPath = "tex/grass/grass.blend",
+		*windowPath = "tex/window/window.blend",
 
 		*textureVertexPath = "shaders/textures.vs",
 		*textureFragmentPath = "shaders/textures.fs",
@@ -21,6 +22,8 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		*lampSphereFragmentPath = "shaders/lampSphere.fs",
 		*simpleVertexPath = "shaders/simple.vs",
 		*simpleFragmentPath = "shaders/simple.fs",
+		*simpleTexVertexPath = "shaders/simpleTex.vs",
+		*simpleTexFragmentPath = "shaders/simpleTex.fs",
 		*simpleTexGrassVertexPath = "shaders/simpleTexGrass.vs",
 		*simpleTexGrassFragmentPath = "shaders/simpleTexGrass.fs",
 		*normalOutLineVertexPath = "shaders/normalOutLine.vs",
@@ -44,6 +47,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		textureShader(textureVertexPath, textureFragmentPath),
 		lampSphereShader(lampSphereVertexPath, lampSphereFragmentPath),
 		simpleShader(simpleVertexPath, simpleFragmentPath),
+		simpleTexShader(simpleTexVertexPath, simpleTexFragmentPath),
 		simpleTexGrassShader(simpleTexGrassVertexPath, simpleTexGrassFragmentPath),
 		normalOutLineShader(normalOutLineVertexPath, normalOutLineFragmentPath),
 		outLineShader(outLineVertexPath, outLineFragmentPath);
@@ -52,6 +56,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		nanosuit(nanosuitPath),
 		sphere(spherePath),
 		cube(cubePath),
+		windoW(windowPath),
 		grass(grassPath);
 
 
@@ -80,7 +85,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 			glm::vec3(0.0f, -1.0f, 0.0f), 0, 0, 0, glm::vec3(1.0f),
 			view, projection, camera.Position, 64,
 			modelLamps,
-			false, nullptr, glm::vec3(0), 0, glm::vec3(0)
+			false
 		);
 		glEnable(GL_CULL_FACE);
 		//grass
@@ -93,7 +98,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 						glm::vec3(scaleX, -0.7f, scaleZ), 0, angleY, 0, glm::vec3(0.3f),
 						view, projection, camera.Position, 64,
 						modelLamps,
-						false, nullptr, glm::vec3(0), 0, glm::vec3(0)
+						false
 					);
 				}
 			}
@@ -105,7 +110,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 			dirLamp.position, 0, 0, 0, glm::vec3(1.0f),
 			view, projection,
 			dirLamp.color,
-			false, nullptr, glm::vec3(0), 0, glm::vec3(0)
+			false
 		);
 		//pointLamps
 		sphere.DrawColorModel(
@@ -113,7 +118,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 			pointLamp.position, 0, 0, 0, glm::vec3(0.1f),
 			view, projection,
 			pointLamp.color,
-			false, nullptr, glm::vec3(0), 0, glm::vec3(0)
+			false
 		);
 		//cube
 		//#1
@@ -122,7 +127,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 			glm::vec3(1.0f, -0.699f, 0.0f), 0, 0, 0, glm::vec3(0.3f),
 			view, projection, camera.Position, 64,
 			modelLamps,
-			false, nullptr, glm::vec3(0), 0, glm::vec3(0)
+			false
 		);
 		//#2
 		cube.DrawTexModel(
@@ -130,7 +135,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 			glm::vec3(2.0f, -0.699f, -1.0f), 0, 0, 0, glm::vec3(0.3f),
 			view, projection, camera.Position, 64,
 			modelLamps,
-			false, nullptr, glm::vec3(0), 0, glm::vec3(0)
+			false
 		);
 		//nanosuit
 		nanosuit.DrawTexModel(
@@ -140,7 +145,18 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 			modelLamps,
 			true, &normalOutLineShader, glm::vec3(0.1f), 0.1f, glm::vec3(1.0f, 0.5f, 0.0f)
 		);
-
+		//windows
+		glDisable(GL_CULL_FACE);
+		for (float scaleX = 0, scaleZ = 1; scaleX >= -2; scaleX -= 0.5f, scaleZ += 0.5f) {
+			windoW.DrawTexModel(
+				simpleTexShader,
+				glm::vec3(scaleX, -0.75f, scaleZ), 0, 0, 0, glm::vec3(0.25f),
+				view, projection, camera.Position, 64,
+				modelLamps,
+				false
+			);
+		}
+		glEnable(GL_CULL_FACE);
 
 		glfwSwapBuffers(window);
 	}
