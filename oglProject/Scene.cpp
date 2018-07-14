@@ -29,8 +29,9 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		*outLineFragmentPath = "shaders/outLine.fs";
 
 	camera.FPScam = true;
-	Lamps dirLamp(glm::vec3(1.2f, 50.0f, -20.0f), glm::vec3(1.0f, 0.98f, 0.75f));
-	Lamps pointLamp(glm::vec3(1.2f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+	Lamps 
+		dirLamp(glm::vec3(1.2f, 50.0f, -20.0f), glm::vec3(1.0f, 0.98f, 0.75f)),
+		pointLamp(glm::vec3(1.2f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 	ModelLamps modelLamps;
 	modelLamps.dirLamps = &dirLamp;
 	modelLamps.dirLampsCount = 1;
@@ -46,11 +47,12 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		simpleTexGrassShader(simpleTexGrassVertexPath, simpleTexGrassFragmentPath),
 		normalOutLineShader(normalOutLineVertexPath, normalOutLineFragmentPath),
 		outLineShader(outLineVertexPath, outLineFragmentPath);
-	Model floor(floorPath);
-	Model nanosuit(nanosuitPath);
-	Model sphere(spherePath);
-	Model cube(cubePath);
-	Model grass(grassPath);
+	Model 
+		floor(floorPath),
+		nanosuit(nanosuitPath),
+		sphere(spherePath),
+		cube(cubePath),
+		grass(grassPath);
 
 
 	while (!glfwWindowShouldClose(window)) {
