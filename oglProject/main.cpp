@@ -66,7 +66,8 @@ int main() {
 	glViewport(0, 0, width, height);
 
 	Scene scene;
-	scene.DrawScene1(camera, window, WIDTH, HEIGHT, keys);
+//	scene.DrawScene1(camera, window, WIDTH, HEIGHT, keys);
+	scene.DrawScene2(camera, window, WIDTH, HEIGHT, keys);
 
 
 	glfwTerminate();

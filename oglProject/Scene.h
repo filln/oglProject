@@ -8,12 +8,14 @@
 #include "Camera.h"
 //#include "Materials.h"
 #include "Lamps.h"
+#include <map>
 
 class Scene
 {
 public:
 	Scene();
 	void DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys);
+	void DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys);
 	~Scene();
 private:
 	GLfloat
