@@ -7,30 +7,6 @@ Scene::Scene()
 }
 
 void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys) {
-	const GLchar
-		*nanosuitPath = "tex/nanosuit/nanosuit.obj",
-		*earthPath = "tex/earth/earth.obj",
-		*spherePath = "tex/sphere.blend",
-		*cubePath = "tex/container/cube.obj",
-		*floorPath = "tex/floor/floor.obj",
-		*grassPath = "tex/grass/grass.blend",
-		*windowPath = "tex/window/window.blend",
-
-		*textureVertexPath = "shaders/textures.vs",
-		*textureFragmentPath = "shaders/textures.fs",
-		*lampSphereVertexPath = "shaders/lampSphere.vs",
-		*lampSphereFragmentPath = "shaders/lampSphere.fs",
-		*simpleVertexPath = "shaders/simple.vs",
-		*simpleFragmentPath = "shaders/simple.fs",
-		*simpleTexVertexPath = "shaders/simpleTex.vs",
-		*simpleTexFragmentPath = "shaders/simpleTex.fs",
-		*simpleTexGrassVertexPath = "shaders/simpleTexGrass.vs",
-		*simpleTexGrassFragmentPath = "shaders/simpleTexGrass.fs",
-		*normalOutLineVertexPath = "shaders/normalOutLine.vs",
-		*normalOutLineFragmentPath = "shaders/normalOutLine.fs",
-		*outLineVertexPath = "shaders/outLine.vs",
-		*outLineFragmentPath = "shaders/outLine.fs";
-
 	camera.FPScam = true;
 	Lamps 
 		dirLamp(glm::vec3(1.2f, 50.0f, -20.0f), glm::vec3(1.0f, 0.98f, 0.75f)),
@@ -168,30 +144,6 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 }
 
 void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys) {
-	const GLchar
-		*nanosuitPath = "tex/nanosuit/nanosuit.obj",
-		*earthPath = "tex/earth/earth.obj",
-		*spherePath = "tex/sphere.blend",
-		*cubePath = "tex/container/cube.obj",
-		*floorPath = "tex/floor/floor.obj",
-		*grassPath = "tex/grass/grass.blend",
-		*windowPath = "tex/window/window.blend",
-
-		*textureVertexPath = "shaders/textures.vs",
-		*textureFragmentPath = "shaders/textures.fs",
-		*lampSphereVertexPath = "shaders/lampSphere.vs",
-		*lampSphereFragmentPath = "shaders/lampSphere.fs",
-		*simpleVertexPath = "shaders/simple.vs",
-		*simpleFragmentPath = "shaders/simple.fs",
-		*simpleTexVertexPath = "shaders/simpleTex.vs",
-		*simpleTexFragmentPath = "shaders/simpleTex.fs",
-		*simpleTexGrassVertexPath = "shaders/simpleTexGrass.vs",
-		*simpleTexGrassFragmentPath = "shaders/simpleTexGrass.fs",
-		*normalOutLineVertexPath = "shaders/normalOutLine.vs",
-		*normalOutLineFragmentPath = "shaders/normalOutLine.fs",
-		*outLineVertexPath = "shaders/outLine.vs",
-		*outLineFragmentPath = "shaders/outLine.fs";
-
 	camera.FPScam = true;
 	Lamps
 		dirLamp(glm::vec3(1.2f, 50.0f, -20.0f), glm::vec3(1.0f, 0.98f, 0.75f)),
@@ -211,7 +163,8 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		simpleTexShader(simpleTexVertexPath, simpleTexFragmentPath),
 		simpleTexGrassShader(simpleTexGrassVertexPath, simpleTexGrassFragmentPath),
 		normalOutLineShader(normalOutLineVertexPath, normalOutLineFragmentPath),
-		outLineShader(outLineVertexPath, outLineFragmentPath);
+		outLineShader(outLineVertexPath, outLineFragmentPath),
+		frameSimpleTexShader(frameSimpleTexVertexPath, frameSimpleTexFragmentPath);
 	Model
 		floor(floorPath),
 		nanosuit(nanosuitPath),
@@ -220,7 +173,18 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		windoW(windowPath),
 		grass(grassPath);
 
-	//buffers
+	//frames
+	GLuint quadVAO, quadVBO;
+	glGenVertexArrays(1, &quadVAO);
+	glGenBuffers(1, &quadVBO);
+	glBindVertexArray(quadVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+
 	GLuint framebuffer;
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
@@ -351,20 +315,15 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-		//floor
-		glDisable(GL_CULL_FACE);
-		floor.DrawTexModel(
-			textureShader,
-			glm::vec3(0.0f, -1.0f, 0.0f), 0, 0, 0, glm::vec3(1.0f),
-			view, projection, camera.Position, 64,
-			modelLamps,
-			false
-		);
-		glEnable(GL_CULL_FACE);
+		frameSimpleTexShader.Use();
+		glBindVertexArray(quadVAO);
 		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		glfwSwapBuffers(window);
 	}
+	glDeleteVertexArrays(1, &quadVAO);
+	glDeleteBuffers(1, &quadVBO);
 }
 
 void Scene::do_movement(Camera& camera, bool* keys) {
