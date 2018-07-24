@@ -67,7 +67,7 @@ int main() {
 
 	Scene scene;
 //	scene.DrawScene1(camera, window, WIDTH, HEIGHT, keys);
-	scene.DrawScene2(camera, window, WIDTH, HEIGHT, keys);
+//	scene.DrawScene2(camera, window, WIDTH, HEIGHT, keys);
 
 
 	glfwTerminate();

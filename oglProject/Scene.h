@@ -1,26 +1,28 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include "shader.h"
 #include "Model.h"
 #include "Camera.h"
-//#include "Materials.h"
 #include "Lamps.h"
+#include "SkyBox.h"
 #include <map>
 
 class Scene
 {
 public:
 	Scene();
+	//default
 	void DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys);
+	//framebuffer
 	void DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys);
+	//skybox
+	void DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys);
 	~Scene();
 private:
 	GLfloat
 		deltaTime = 0.0f,
 		lastFrame = 0.0f,
+		//for Scene2
 		quadVertices[24] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
 		 // positions  // texCoords
 		-1.0f,  1.0f,  0.0f, 1.0f,
@@ -55,9 +57,11 @@ private:
 		*normalOutLineFragmentPath = "shaders/normalOutLine.fs",
 		*outLineVertexPath = "shaders/outLine.vs",
 		*outLineFragmentPath = "shaders/outLine.fs",
+		//for Scene2
 		*frameSimpleTexVertexPath = "shaders/frameSimpleTex.vs",
 		*frameSimpleTexFragmentPath = "shaders/frameSimpleTex.fs";
 
 	void do_movement(Camera& camera, bool* keys);
+	GLuint loadCubemap(const char* faces[]);
 };
 

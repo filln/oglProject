@@ -7,8 +7,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <GLEW/glew.h>
-#include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Lamps.h"
 #include "Camera.h"

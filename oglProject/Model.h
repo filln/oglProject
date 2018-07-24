@@ -1,16 +1,11 @@
 #pragma once
 
-#include <GLEW/glew.h>
 //#include <SOIL/SOIL.h>
 //#define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <string>
-#include <vector>
-#include <iostream>
-#include "Shader.h"
 #include "Lamps.h"
 #include "Materials.h"
 #include "Mesh.h"
