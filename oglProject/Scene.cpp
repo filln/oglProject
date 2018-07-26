@@ -328,6 +328,7 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 
 void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys) {
 	camera.FPScam = true;
+	SkyBox sky(right, left, top, bottom, front, back);
 	Lamps
 		dirLamp(glm::vec3(1.2f, 50.0f, -20.0f), glm::vec3(1.0f, 0.98f, 0.75f)),
 		pointLamp(glm::vec3(1.2f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -346,7 +347,8 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		simpleTexShader(simpleTexVertexPath, simpleTexFragmentPath),
 		simpleTexGrassShader(simpleTexGrassVertexPath, simpleTexGrassFragmentPath),
 		normalOutLineShader(normalOutLineVertexPath, normalOutLineFragmentPath),
-		outLineShader(outLineVertexPath, outLineFragmentPath);
+		outLineShader(outLineVertexPath, outLineFragmentPath),
+		skyShader(skyVertexPath, skyFragmentPath);
 	Model
 		floor(floorPath),
 		nanosuit(nanosuitPath),
@@ -376,6 +378,12 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		glm::mat4 view, projection;
 		view = camera.GetViewMatrix();
 		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+		//skyBox
+		sky.DrawSky(
+			skyShader,
+			glm::vec3(1.0f),
+			glm::mat4(glm::mat3(view)), projection
+		);
 		//floor
 		glDisable(GL_CULL_FACE);
 		floor.DrawTexModel(

@@ -8,9 +8,9 @@ class SkyBox
 public:
 	SkyBox();
 	SkyBox(
-		const char* positiveX, const char* negativeX,
-		const char* positiveY, const char* negativeY,
-		const char* positiveZ, const char* negativeZ
+		const GLchar* positiveX, const GLchar* negativeX,
+		const GLchar* positiveY, const GLchar* negativeY,
+		const GLchar* positiveZ, const GLchar* negativeZ
 	);
 	void DrawSky(
 		Shader& shader, 
@@ -73,7 +73,7 @@ private:
 		20, 22, 23
 	};
 	GLuint 
-		cubemapTexture,
+		texture,
 		VAO, VBO, EBO,
 		loadCubemap(const char* faces[]);
 };

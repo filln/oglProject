@@ -59,9 +59,20 @@ private:
 		*outLineFragmentPath = "shaders/outLine.fs",
 		//for Scene2
 		*frameSimpleTexVertexPath = "shaders/frameSimpleTex.vs",
-		*frameSimpleTexFragmentPath = "shaders/frameSimpleTex.fs";
+		*frameSimpleTexFragmentPath = "shaders/frameSimpleTex.fs",
+		//for Scene3
+			//shaders
+		*skyVertexPath = "shaders/skyBox.vs",
+		*skyFragmentPath = "shaders/skyBox.fs",
+			//textures
+		*right = "tex/skybox/right.jpg",
+		*left = "tex/skybox/left.jpg",
+		*top = "tex/skybox/top.jpg",
+		*bottom = "tex/skybox/bottom.jpg",
+		*front = "tex/skybox/front.jpg",
+		*back = "tex/skybox/back.jpg";
+
 
 	void do_movement(Camera& camera, bool* keys);
-	GLuint loadCubemap(const char* faces[]);
 };
 

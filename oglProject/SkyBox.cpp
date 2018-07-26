@@ -7,15 +7,15 @@ SkyBox::SkyBox()
 }
 
 SkyBox::SkyBox(
-	const char* positiveX, const char* negativeX,
-	const char* positiveY, const char* negativeY,
-	const char* positiveZ, const char* negativeZ
+	const GLchar* positiveX, const GLchar* negativeX,
+	const GLchar* positiveY, const GLchar* negativeY,
+	const GLchar* positiveZ, const GLchar* negativeZ
 ) {
 	faces[0] = positiveX;	faces[1] = negativeX;
 	faces[2] = positiveY;   faces[3] = negativeY;
 	faces[4] = positiveZ;   faces[5] = negativeZ;
 
-	cubemapTexture = loadCubemap(faces);
+	texture = loadCubemap(faces);
 
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -38,14 +38,26 @@ void SkyBox::DrawSky(
 	glm::vec3 scale,
 	glm::mat4 view, glm::mat4 projection
 ) {
+	glDepthMask(GL_FALSE);
 
+	shader.Use();
+	shader.setMat4("view", view);
+	shader.setMat4("projection", projection);
+
+	glBindVertexArray(VAO);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+//	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glBindVertexArray(0);
+
+	glDepthMask(GL_TRUE);
 }
 
 GLuint SkyBox::loadCubemap(const char* faces[]) {
 	GLuint	sizeFaces = sizeof(faces) / sizeof(const char*);
 	if (sizeFaces != 6) {
 		std::cout << "size of faces[] for cubemap must be 6" << std::endl;
-		return 0;
+//		return 0;
 	}
 
 	GLuint texture;
