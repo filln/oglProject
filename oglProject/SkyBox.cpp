@@ -23,13 +23,16 @@ SkyBox::SkyBox(
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, 72, vertices, GL_STATIC_DRAW);
+//	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesFull), verticesFull, GL_STATIC_DRAW);
+//	std::cout << sizeof(indices) / sizeof(float) << std::endl;
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 36, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)0);
 	glEnableVertexAttribArray(0);
 
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }
 
@@ -39,25 +42,27 @@ void SkyBox::DrawSky(
 	glm::mat4 view, glm::mat4 projection
 ) {
 	glDepthMask(GL_FALSE);
+	glDisable(GL_CULL_FACE);
 
 	shader.Use();
 	shader.setMat4("view", view);
 	shader.setMat4("projection", projection);
 
-	glBindVertexArray(VAO);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 //	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glBindVertexArray(0);
 
+	glEnable(GL_CULL_FACE);
 	glDepthMask(GL_TRUE);
 }
 
-GLuint SkyBox::loadCubemap(const char* faces[]) {
-	GLuint	sizeFaces = sizeof(faces) / sizeof(const char*);
+GLuint SkyBox::loadCubemap(const char* faces[], GLuint sizeFaces) {
 	if (sizeFaces != 6) {
 		std::cout << "size of faces[] for cubemap must be 6" << std::endl;
-//		return 0;
+		std::cout << "sizeFaces == "<< sizeFaces << std::endl;
+		return 0;
 	}
 
 	GLuint texture;
@@ -91,6 +96,7 @@ GLuint SkyBox::loadCubemap(const char* faces[]) {
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
+//	std::cout << texture << std::endl;
 	return texture;
 }
 
