@@ -6,4 +6,5 @@ uniform samplerCube inTexture;
 
 void main(){
     color = texture(inTexture, texCoords);
+    //color = vec4(1.0, 1.0, 1.0, 1.0);
 }

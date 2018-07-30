@@ -56,7 +56,7 @@ void Figures::Cube72(GLfloat* vertices, const GLuint sizeVer, GLuint* indices, c
 			-0.5f,  0.5f, -0.5f,
 			0.5f,  0.5f, -0.5f,
 			0.5f,  0.5f,  0.5f,
-			-0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f
 		};
 		for (GLuint i = 0; i < sizeVer; ++i) vertices[i] = vertices_tmp[i];
 		delete[] vertices_tmp;
