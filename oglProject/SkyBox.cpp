@@ -57,6 +57,10 @@ void SkyBox::DrawSky(
 //	glDepthMask(GL_TRUE);
 }
 
+GLuint SkyBox::GetTexture() const {
+	return this->texture;
+}
+
 GLuint SkyBox::loadCubemap(const GLchar* faces[], GLuint sizeFaces) {
 	if (sizeFaces != 6) {
 		std::cout << "size of faces[] for cubemap must be 6" << std::endl;

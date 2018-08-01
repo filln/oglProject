@@ -102,6 +102,12 @@ public:
 		ModelLamps& modelLamps,
 		GLboolean isOutLine
 	);
+	void DrawMirrorModel(
+		Shader& shader,
+		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
+		glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos,
+		GLuint skyboxTexture
+	);
 	~Model();
 private:
 	TexTypes texTypes;

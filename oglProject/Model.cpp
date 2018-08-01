@@ -312,6 +312,29 @@ void Model::drawOutLineModel(
 }
 //outline with material
 
+//mirrorModel
+void Model::DrawMirrorModel(
+	Shader& shader,
+	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
+	glm::mat4 view, glm::mat4 projection, glm::vec3 cameraPosition,
+	GLuint skyboxTexture
+) {
+	glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
+
+	glm::mat4 model;
+	model = glm::translate(model, translate);
+	if (angleX)	model = glm::rotate(model, glm::radians(angleX), glm::vec3(1.0f, 0.0f, 0.0f));
+	if (angleY)	model = glm::rotate(model, glm::radians(angleY), glm::vec3(0.0f, 1.0f, 0.0f));
+	if (angleZ)	model = glm::rotate(model, glm::radians(angleZ), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::scale(model, scale);
+
+	shader.Use();
+	shader.setMat4("model", model);
+	shader.setMat4("view", view);
+	shader.setMat4("projection", projection);
+	shader.setVec3("cameraPosition", cameraPosition);
+	this->Draw(shader);
+}
 void Model::loadModel(string path) {
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);

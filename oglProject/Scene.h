@@ -64,6 +64,8 @@ private:
 			//shaders
 		*skyVertexPath = "shaders/skyBox.vs",
 		*skyFragmentPath = "shaders/skyBox.fs",
+		*skyMirrorVertexPath = "shaders/skyMirror.vs",
+		*skyMirrorFragmentPath = "shaders/skyMirror.fs",
 			//textures
 		*right = "tex/skybox/right.jpg",
 		*left = "tex/skybox/left.jpg",

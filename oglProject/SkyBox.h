@@ -17,6 +17,7 @@ public:
 		glm::vec3 scale,
 		glm::mat4 view, glm::mat4 projection
 	);
+	GLuint GetTexture() const;
 	~SkyBox();
 private:
 	const GLchar* faces[6];

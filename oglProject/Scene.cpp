@@ -348,7 +348,8 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		simpleTexGrassShader(simpleTexGrassVertexPath, simpleTexGrassFragmentPath),
 		normalOutLineShader(normalOutLineVertexPath, normalOutLineFragmentPath),
 		outLineShader(outLineVertexPath, outLineFragmentPath),
-		skyShader(skyVertexPath, skyFragmentPath);
+		skyShader(skyVertexPath, skyFragmentPath),
+		skyMirrorShader(skyMirrorVertexPath, skyMirrorFragmentPath);
 	Model
 		floor(floorPath),
 		nanosuit(nanosuitPath),
@@ -378,12 +379,6 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		glm::mat4 view, projection;
 		view = camera.GetViewMatrix();
 		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
-		//skyBox
-		sky.DrawSky(
-			skyShader,
-			glm::vec3(1.0f),
-			glm::mat4(glm::mat3(view)), projection
-		);
 		//floor
 		glDisable(GL_CULL_FACE);
 		floor.DrawTexModel(
@@ -468,6 +463,19 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 			);
 		}
 		glEnable(GL_CULL_FACE);
+		//skyBox
+		sky.DrawSky(
+			skyShader,
+			glm::vec3(1.0f),
+			glm::mat4(glm::mat3(view)), projection
+		);
+		//mirrorCube
+		cube.DrawMirrorModel(
+			skyMirrorShader,
+			glm::vec3(2.0f, 2.0f, -1.0f), 0, 0, 0, glm::vec3(0.3f),
+			view, projection, camera.Position,
+			sky.GetTexture()
+		);
 
 		glfwSwapBuffers(window);
 	}
