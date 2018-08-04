@@ -38,6 +38,7 @@ private:
 		*nanosuitPath = "tex/nanosuit/nanosuit.obj",
 		*earthPath = "tex/earth/earth.obj",
 		*spherePath = "tex/sphere.blend",
+		*semispherePath = "tex/semisphere.blend",
 		*cubePath = "tex/container/cube.obj",
 		*floorPath = "tex/floor/floor.obj",
 		*grassPath = "tex/grass/grass.blend",
@@ -66,6 +67,8 @@ private:
 		*skyFragmentPath = "shaders/skyBox.fs",
 		*skyMirrorVertexPath = "shaders/skyMirror.vs",
 		*skyMirrorFragmentPath = "shaders/skyMirror.fs",
+		*skyPrismVertexPath = "shaders/skyPrism.vs",
+		*skyPrismFragmentPath = "shaders/skyPrism.fs",
 			//textures
 		*right = "tex/skybox/right.jpg",
 		*left = "tex/skybox/left.jpg",

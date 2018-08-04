@@ -349,11 +349,13 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		normalOutLineShader(normalOutLineVertexPath, normalOutLineFragmentPath),
 		outLineShader(outLineVertexPath, outLineFragmentPath),
 		skyShader(skyVertexPath, skyFragmentPath),
-		skyMirrorShader(skyMirrorVertexPath, skyMirrorFragmentPath);
+		skyMirrorShader(skyMirrorVertexPath, skyMirrorFragmentPath),
+		skyPrismShader(skyPrismVertexPath, skyPrismFragmentPath);
 	Model
 		floor(floorPath),
 		nanosuit(nanosuitPath),
 		sphere(spherePath),
+//		semisphere(semispherePath),
 		cube(cubePath),
 		windoW(windowPath),
 		grass(grassPath);
@@ -438,6 +440,34 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 			modelLamps,
 			false
 		);
+		//skyBox
+		glEnable(GL_STENCIL_TEST);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		glStencilFunc(GL_ALWAYS, 0, 1);
+		glStencilMask(0);
+		sky.DrawSky(
+			skyShader,
+			glm::vec3(1.0f),
+			glm::mat4(glm::mat3(view)), projection
+		);
+		//mirrorCube
+		cube.DrawMirrorModel(
+			skyMirrorShader,
+			glm::vec3(2.0f, 2.0f, -1.0f), 0, 0, 0, glm::vec3(0.3f),
+			view, projection, camera.Position,
+			sky.GetTexture()
+		);
+//		glDisable(GL_CULL_FACE);
+		//prismCube
+		sphere.DrawPrismModel(
+			skyPrismShader,
+			glm::vec3(-2.0f, 2.0f, -1.0f), 0, 0, 0, glm::vec3(0.5f),
+			view, projection, camera.Position,
+			sky.GetTexture(),
+			1, 1.52
+		);
+		glStencilMask(1);
+//		glEnable(GL_CULL_FACE);
 		//nanosuit
 		nanosuit.DrawTexModel(
 			textureShader,
@@ -463,20 +493,6 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 			);
 		}
 		glEnable(GL_CULL_FACE);
-		//skyBox
-		sky.DrawSky(
-			skyShader,
-			glm::vec3(1.0f),
-			glm::mat4(glm::mat3(view)), projection
-		);
-		//mirrorCube
-		cube.DrawMirrorModel(
-			skyMirrorShader,
-			glm::vec3(2.0f, 2.0f, -1.0f), 0, 0, 0, glm::vec3(0.3f),
-			view, projection, camera.Position,
-			sky.GetTexture()
-		);
-
 		glfwSwapBuffers(window);
 	}
 }

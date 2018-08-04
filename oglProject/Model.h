@@ -105,8 +105,15 @@ public:
 	void DrawMirrorModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-		glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos,
+		glm::mat4 view, glm::mat4 projection, glm::vec3 cameraPosition,
 		GLuint skyboxTexture
+	);
+	void DrawPrismModel(
+		Shader& shader,
+		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
+		glm::mat4 view, glm::mat4 projection, glm::vec3 cameraPosition,
+		GLuint skyboxTexture,
+		GLfloat material1, GLfloat material2
 	);
 	~Model();
 private:
