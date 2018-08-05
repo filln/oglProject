@@ -1,9 +1,19 @@
 #include "Scene.h"
 
-
-
 Scene::Scene()
 {
+}
+
+void Scene::do_movement(Camera& camera, bool* keys) {
+	GLfloat currentFrame = glfwGetTime();
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+	if (keys[GLFW_KEY_W]) camera.ProcessKeyboard(FORWARD, deltaTime);
+	if (keys[GLFW_KEY_S]) camera.ProcessKeyboard(BACKWARD, deltaTime);
+	if (keys[GLFW_KEY_A]) camera.ProcessKeyboard(LEFT, deltaTime);
+	if (keys[GLFW_KEY_D]) camera.ProcessKeyboard(RIGHT, deltaTime);
+	if (keys[GLFW_KEY_SPACE]) camera.ProcessKeyboard(UP, deltaTime);
+	if (keys[GLFW_KEY_LEFT_SHIFT]) camera.ProcessKeyboard(DOWN, deltaTime);
 }
 
 void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys) {
@@ -313,6 +323,7 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		glEnable(GL_CULL_FACE);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		frameSimpleTexShader.Use();
@@ -495,18 +506,6 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		glEnable(GL_CULL_FACE);
 		glfwSwapBuffers(window);
 	}
-}
-
-void Scene::do_movement(Camera& camera, bool* keys) {
-	GLfloat currentFrame = glfwGetTime();
-	deltaTime = currentFrame - lastFrame;
-	lastFrame = currentFrame;
-	if (keys[GLFW_KEY_W]) camera.ProcessKeyboard(FORWARD, deltaTime);
-	if (keys[GLFW_KEY_S]) camera.ProcessKeyboard(BACKWARD, deltaTime);
-	if (keys[GLFW_KEY_A]) camera.ProcessKeyboard(LEFT, deltaTime);
-	if (keys[GLFW_KEY_D]) camera.ProcessKeyboard(RIGHT, deltaTime);
-	if (keys[GLFW_KEY_SPACE]) camera.ProcessKeyboard(UP, deltaTime);
-	if (keys[GLFW_KEY_LEFT_SHIFT]) camera.ProcessKeyboard(DOWN, deltaTime);
 }
 
 Scene::~Scene()
