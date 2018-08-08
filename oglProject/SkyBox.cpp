@@ -36,7 +36,6 @@ SkyBox::SkyBox(
 
 void SkyBox::DrawSky(
 	Shader& shader,
-	glm::vec3 scale,
 	glm::mat4 view, glm::mat4 projection
 ) {
 //	glDepthMask(GL_FALSE);
@@ -105,4 +104,7 @@ GLuint SkyBox::loadCubemap(const GLchar* faces[], GLuint sizeFaces) {
 
 SkyBox::~SkyBox()
 {
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
 }
