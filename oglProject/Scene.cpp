@@ -692,6 +692,68 @@ void Scene::DrawScene4(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 	glDeleteBuffers(1, &EBO);
 }
 
+void Scene::DrawScene5(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys) {
+	camera.FPScam = true;
+
+	const GLchar
+		*pointsVertexPath = "shaders/4.8/points.vs",
+		*pointsFragmentPath = "shaders/4.8/points.fs";
+
+	Shader pointShader(pointsVertexPath, pointsFragmentPath);
+
+	GLfloat positions[24] = {
+		-0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,
+		 0.5f,  0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,
+		-0.5f, -0.5f,  0.5f,
+		 0.5f, -0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f
+	};
+
+	GLuint VAO, VBO;
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, 24, positions, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0 * sizeof(GL_FLOAT), nullptr);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	while (!glfwWindowShouldClose(window)) {
+		glfwPollEvents();
+
+		do_movement(camera, keys);
+
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_PROGRAM_POINT_SIZE);
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glm::mat4 view, projection;
+		view = camera.GetViewMatrix();
+		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+
+		pointShader.Use();
+		pointShader.setMat4("projection", projection);
+		pointShader.setMat4("view", view);
+		glm::mat4 model;
+		model = glm::translate(model, glm::vec3(0.5f));
+		pointShader.setMat4("model", model);
+
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_POINTS, 0, 8);
+		glBindVertexArray(0);
+
+		glfwSwapBuffers(window);
+	}
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+}
+
 
 Scene::~Scene()
 {
