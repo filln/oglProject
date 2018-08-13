@@ -521,118 +521,118 @@ void Scene::DrawScene4(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 
 	GLfloat
 		positions[72] = {
-       -0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f,
-		0.5f,  0.5f, -0.5f,
-	   -0.5f,  0.5f, -0.5f,
+			-0.5f,  0.5f, -0.5f,
+			0.5f,  0.5f, -0.5f,
+			0.5f, -0.5f, -0.5f,
+			-0.5f, -0.5f, -0.5f,
 
-	   -0.5f, -0.5f,  0.5f,
-		0.5f, -0.5f,  0.5f,
-		0.5f,  0.5f,  0.5f,
-	   -0.5f,  0.5f,  0.5f,
+			-0.5f, -0.5f,  0.5f,
+			0.5f, -0.5f,  0.5f,
+			0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f,
 
-	   -0.5f,  0.5f,  0.5f,
-	   -0.5f,  0.5f, -0.5f,
-	   -0.5f, -0.5f, -0.5f,
-	   -0.5f, -0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f, -0.5f,
+			-0.5f, -0.5f, -0.5f,
+			-0.5f, -0.5f,  0.5f,
 
-		0.5f,  0.5f,  0.5f,
-		0.5f,  0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f,  0.5f,
+			0.5f,  0.5f,  0.5f,
+			0.5f, -0.5f,  0.5f,
+			0.5f, -0.5f, -0.5f,
+			0.5f,  0.5f, -0.5f,
 
-	   -0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f,  0.5f,
-	   -0.5f, -0.5f,  0.5f,
+			-0.5f, -0.5f, -0.5f,
+			0.5f, -0.5f, -0.5f,
+			0.5f, -0.5f,  0.5f,
+			-0.5f, -0.5f,  0.5f,
 
-	   -0.5f,  0.5f, -0.5f,
-		0.5f,  0.5f, -0.5f,
-		0.5f,  0.5f,  0.5f,
-	   -0.5f,  0.5f,  0.5f
-	},
+			-0.5f,  0.5f, -0.5f,
+			-0.5f,  0.5f,  0.5f,
+			0.5f,  0.5f,  0.5f,
+			0.5f,  0.5f, -0.5f
+		},
 		normals[72] = {
-		0.0f,  0.0f, -1.0f,
-		0.0f,  0.0f, -1.0f,
-		0.0f,  0.0f, -1.0f,
-	    0.0f,  0.0f, -1.0f,
+			0.0f,  0.0f, -1.0f,
+			0.0f,  0.0f, -1.0f,
+			0.0f,  0.0f, -1.0f,
+			0.0f,  0.0f, -1.0f,
 
-		0.0f,  0.0f,  1.0f,
-		0.0f,  0.0f,  1.0f,
-		0.0f,  0.0f,  1.0f,
-		0.0f,  0.0f,  1.0f,
+			0.0f,  0.0f,  1.0f,
+			0.0f,  0.0f,  1.0f,
+			0.0f,  0.0f,  1.0f,
+			0.0f,  0.0f,  1.0f,
 
-       -1.0f,  0.0f,  0.0f,
-	   -1.0f,  0.0f,  0.0f,
-	   -1.0f,  0.0f,  0.0f,
-	   -1.0f,  0.0f,  0.0f,
+		   -1.0f,  0.0f,  0.0f,
+		   -1.0f,  0.0f,  0.0f,
+		   -1.0f,  0.0f,  0.0f,
+		   -1.0f,  0.0f,  0.0f,
 
-		1.0f,  0.0f,  0.0f,
-		1.0f,  0.0f,  0.0f,
-		1.0f,  0.0f,  0.0f,
-		1.0f,  0.0f,  0.0f,
+			1.0f,  0.0f,  0.0f,
+			1.0f,  0.0f,  0.0f,
+			1.0f,  0.0f,  0.0f,
+			1.0f,  0.0f,  0.0f,
 
-		0.0f, -1.0f,  0.0f,
-		0.0f, -1.0f,  0.0f,
-		0.0f, -1.0f,  0.0f,
-		0.0f, -1.0f,  0.0f,
+			0.0f, -1.0f,  0.0f,
+			0.0f, -1.0f,  0.0f,
+			0.0f, -1.0f,  0.0f,
+			0.0f, -1.0f,  0.0f,
 
-		0.0f,  1.0f,  0.0f,
-		0.0f,  1.0f,  0.0f,
-		0.0f,  1.0f,  0.0f,
-		0.0f,  1.0f,  0.0f
-	},
+			0.0f,  1.0f,  0.0f,
+			0.0f,  1.0f,  0.0f,
+			0.0f,  1.0f,  0.0f,
+			0.0f,  1.0f,  0.0f
+		},
 		textureCoords[48] = {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
+			0.0f, 1.0f,
+			1.0f, 1.0f,
+			1.0f, 0.0f,
+			0.0f, 0.0f,
 
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
+			0.0f, 0.0f,
+			1.0f, 0.0f,
+			1.0f, 1.0f,
+			0.0f, 1.0f,
 
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f,
+			1.0f, 0.0f,
+			1.0f, 1.0f,
+			0.0f, 1.0f,
+			0.0f, 0.0f,
 
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f,
+			1.0f, 0.0f,
+			0.0f, 0.0f,
+			0.0f, 1.0f,
+			1.0f, 1.0f,
 
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
-		0.0f, 0.0f,
+			0.0f, 1.0f,
+			1.0f, 1.0f,
+			1.0f, 0.0f,
+			0.0f, 0.0f,
 
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
-		0.0f, 0.0f,
-	};
+			0.0f, 1.0f,
+			0.0f, 0.0f,
+			1.0f, 0.0f,
+			1.0f, 1.0f
+		};
 	GLuint 
 		indices[36] = {
-		0, 1, 2,
-		0, 2, 3,
+			0, 1, 2,
+			0, 2, 3,
 
-		4, 5, 6,
-		4, 6, 7,
+			4, 5, 6,
+			4, 6, 7,
 
-		8, 9, 10,
-		8, 10, 11,
+			8, 9, 10,
+			8, 10, 11,
 
-		12, 13, 14,
-		12, 14, 15,
+			12, 13, 14,
+			12, 14, 15,
 
-		16, 17, 18,
-		16, 18, 19,
+			16, 17, 18,
+			16, 18, 19,
 
-		20, 21, 22,
-		20, 22, 23
-	},
+			20, 21, 22,
+			20, 22, 23
+		},
 		VAO, VBO, EBO;
 
 	glGenVertexArrays(1, &VAO);
@@ -697,28 +697,160 @@ void Scene::DrawScene5(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 
 	const GLchar
 		*pointsVertexPath = "shaders/4.8/points.vs",
-		*pointsFragmentPath = "shaders/4.8/points.fs";
+		*pointsFragmentPath = "shaders/4.8/points.fs",
+		*cubeVertexPath = "shaders/4.8/cube.vs",
+		*cubeFragmentPath = "shaders/4.8/cube.fs";
 
-	Shader pointShader(pointsVertexPath, pointsFragmentPath);
+	Shader
+		pointShader(pointsVertexPath, pointsFragmentPath),
+		cubeShader(cubeVertexPath, cubeFragmentPath);
 
-	GLfloat positions[24] = {
-		-0.5f, -0.5f, -0.5f,
-		 0.5f, -0.5f, -0.5f,
-		 0.5f,  0.5f, -0.5f,
-		-0.5f,  0.5f, -0.5f,
-		-0.5f, -0.5f,  0.5f,
-		 0.5f, -0.5f,  0.5f,
-		 0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f,  0.5f
-	};
+	GLfloat
+		positions[24] = {
+			-0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f, -0.5f,
+			 0.5f,  0.5f, -0.5f,
+			-0.5f,  0.5f, -0.5f,
+			-0.5f, -0.5f,  0.5f,
+			 0.5f, -0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f
+		},
+		positionsCube[72] = {
+			-0.5f,  0.5f, -0.5f,
+			 0.5f,  0.5f, -0.5f,
+			 0.5f, -0.5f, -0.5f,
+			-0.5f, -0.5f, -0.5f,
 
-	GLuint VAO, VBO;
+			-0.5f, -0.5f,  0.5f,
+			 0.5f, -0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f,  0.5f,
+
+			-0.5f,  0.5f,  0.5f,
+			-0.5f,  0.5f, -0.5f,
+			-0.5f, -0.5f, -0.5f,
+			-0.5f, -0.5f,  0.5f,
+
+			 0.5f,  0.5f,  0.5f,
+			 0.5f, -0.5f,  0.5f,
+			 0.5f, -0.5f, -0.5f,
+			 0.5f,  0.5f, -0.5f,
+
+			-0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f,  0.5f,
+			-0.5f, -0.5f,  0.5f,
+
+			-0.5f,  0.5f, -0.5f,
+			-0.5f,  0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
+			 0.5f,  0.5f, -0.5f
+		},
+		normalsCube[72] = {
+			0.0f,  0.0f, -1.0f,
+			0.0f,  0.0f, -1.0f,
+			0.0f,  0.0f, -1.0f,
+			0.0f,  0.0f, -1.0f,
+
+			0.0f,  0.0f,  1.0f,
+			0.0f,  0.0f,  1.0f,
+			0.0f,  0.0f,  1.0f,
+			0.0f,  0.0f,  1.0f,
+
+			-1.0f,  0.0f,  0.0f,
+			-1.0f,  0.0f,  0.0f,
+			-1.0f,  0.0f,  0.0f,
+			-1.0f,  0.0f,  0.0f,
+
+			1.0f,  0.0f,  0.0f,
+			1.0f,  0.0f,  0.0f,
+			1.0f,  0.0f,  0.0f,
+			1.0f,  0.0f,  0.0f,
+
+			0.0f, -1.0f,  0.0f,
+			0.0f, -1.0f,  0.0f,
+			0.0f, -1.0f,  0.0f,
+			0.0f, -1.0f,  0.0f,
+
+			0.0f,  1.0f,  0.0f,
+			0.0f,  1.0f,  0.0f,
+			0.0f,  1.0f,  0.0f,
+			0.0f,  1.0f,  0.0f
+		},
+		textureCoordsCube[48] = {
+			0.0f, 1.0f,
+			1.0f, 1.0f,
+			1.0f, 0.0f,
+			0.0f, 0.0f,
+
+			0.0f, 0.0f,
+			1.0f, 0.0f,
+			1.0f, 1.0f,
+			0.0f, 1.0f,
+
+			1.0f, 0.0f,
+			1.0f, 1.0f,
+			0.0f, 1.0f,
+			0.0f, 0.0f,
+
+			1.0f, 0.0f,
+			0.0f, 0.0f,
+			0.0f, 1.0f,
+			1.0f, 1.0f,
+
+			0.0f, 1.0f,
+			1.0f, 1.0f,
+			1.0f, 0.0f,
+			0.0f, 0.0f,
+
+			0.0f, 1.0f,
+			0.0f, 0.0f,
+			1.0f, 0.0f,
+			1.0f, 1.0f
+		};
+	GLuint
+		indicesCube[36] = {
+			0, 1, 2,
+			0, 2, 3,
+
+			4, 5, 6,
+			4, 6, 7,
+
+			8, 9, 10,
+			8, 10, 11,
+
+			12, 13, 14,
+			12, 14, 15,
+
+			16, 17, 18,
+			16, 18, 19,
+
+			20, 21, 22,
+			20, 22, 23
+		},
+		VAO, VBO,
+		VAOCube, VBOCube, EBOCube;
+
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, 24, positions, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0 * sizeof(GL_FLOAT), nullptr);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), nullptr);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	glGenVertexArrays(1, &VAOCube);
+	glGenBuffers(1, &VBOCube);
+	glGenBuffers(1, &EBOCube);
+	glBindVertexArray(VAOCube);
+	glBindBuffer(GL_ARRAY_BUFFER, VBOCube);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(positionsCube), positionsCube, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOCube);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesCube), indicesCube, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), nullptr);
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -741,17 +873,28 @@ void Scene::DrawScene5(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		pointShader.setMat4("projection", projection);
 		pointShader.setMat4("view", view);
 		glm::mat4 model;
-		model = glm::translate(model, glm::vec3(0.5f));
+		model = glm::translate(model, glm::vec3(2.0f));
 		pointShader.setMat4("model", model);
-
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_POINTS, 0, 8);
+		glBindVertexArray(0);
+
+		cubeShader.Use();
+		cubeShader.setMat4("projection", projection);
+		cubeShader.setMat4("view", view);
+		glm::mat4 modelCube;
+		modelCube = translate(modelCube, glm::vec3(0));
+		cubeShader.setMat4("model", modelCube);
+		glBindVertexArray(VAOCube);
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
 		glfwSwapBuffers(window);
 	}
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
+	glDeleteVertexArrays(1, &VAOCube);
+	glDeleteBuffers(1, &VBOCube);
 }
 
 

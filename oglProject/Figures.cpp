@@ -28,14 +28,14 @@ void Figures::Square20(GLfloat* vertices, const GLuint sizeVer, GLuint* indices,
 void Figures::Cube72(GLfloat* vertices, const GLuint sizeVer, GLuint* indices, const GLuint sizeInd) {
 	if (sizeVer == 72 && sizeInd == 36) {
 		GLfloat* vertices_tmp = new float[72]{
-			-0.5f, -0.5f, -0.5f, 
-			0.5f, -0.5f, -0.5f,
-			0.5f,  0.5f, -0.5f,
 			-0.5f,  0.5f, -0.5f,
+			 0.5f,  0.5f, -0.5f,
+			 0.5f, -0.5f, -0.5f,
+			-0.5f, -0.5f, -0.5f,
 
 			-0.5f, -0.5f,  0.5f,
-			0.5f, -0.5f,  0.5f,
-			0.5f,  0.5f,  0.5f,
+			 0.5f, -0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
 			-0.5f,  0.5f,  0.5f,
 
 			-0.5f,  0.5f,  0.5f,
@@ -43,20 +43,20 @@ void Figures::Cube72(GLfloat* vertices, const GLuint sizeVer, GLuint* indices, c
 			-0.5f, -0.5f, -0.5f,
 			-0.5f, -0.5f,  0.5f,
 
-			0.5f,  0.5f,  0.5f,
-			0.5f,  0.5f, -0.5f,
-			0.5f, -0.5f, -0.5f,
-			0.5f, -0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
+			 0.5f, -0.5f,  0.5f,
+			 0.5f, -0.5f, -0.5f,
+		     0.5f,  0.5f, -0.5f,
 
 			-0.5f, -0.5f, -0.5f,
-			0.5f, -0.5f, -0.5f,
-			0.5f, -0.5f,  0.5f,
+		     0.5f, -0.5f, -0.5f,
+			 0.5f, -0.5f,  0.5f,
 			-0.5f, -0.5f,  0.5f,
 
 			-0.5f,  0.5f, -0.5f,
-			0.5f,  0.5f, -0.5f,
-			0.5f,  0.5f,  0.5f,
-			-0.5f,  0.5f,  0.5f
+			-0.5f,  0.5f,  0.5f,
+			 0.5f,  0.5f,  0.5f,
+			 0.5f,  0.5f, -0.5f
 		};
 		for (GLuint i = 0; i < sizeVer; ++i) vertices[i] = vertices_tmp[i];
 		delete[] vertices_tmp;
@@ -90,10 +90,10 @@ void Figures::Cube120(GLfloat* vertices, const GLuint sizeVer, GLuint* indices, 
 	if (sizeVer == 120 && sizeInd == 36) {
 		GLfloat* vertices_tmp = new float[120]{
 			// positions          //texture coords 
-			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-			0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
 			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+			0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
 			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 			0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
@@ -106,9 +106,9 @@ void Figures::Cube120(GLfloat* vertices, const GLuint sizeVer, GLuint* indices, 
 			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
 			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 			0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+			0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
 
 			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 			0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
@@ -116,9 +116,9 @@ void Figures::Cube120(GLfloat* vertices, const GLuint sizeVer, GLuint* indices, 
 			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
 			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 			-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f
 		};
 		for (GLuint i = 0; i < sizeVer; ++i) vertices[i] = vertices_tmp[i];
 		delete[] vertices_tmp;
@@ -152,10 +152,10 @@ void Figures::Cube144(GLfloat* vertices, const GLuint sizeVer, GLuint* indices, 
 	if (sizeVer == 144 && sizeInd == 36) {
 		GLfloat* vertices_tmp = new float[144]{
 			// positions          // normals 
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+			0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+			0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 
 			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
 			0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
@@ -168,9 +168,9 @@ void Figures::Cube144(GLfloat* vertices, const GLuint sizeVer, GLuint* indices, 
 			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
 
 			0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-			0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-			0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
 			0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+			0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+			0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
 
 			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
 			0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
@@ -178,9 +178,9 @@ void Figures::Cube144(GLfloat* vertices, const GLuint sizeVer, GLuint* indices, 
 			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
 
 			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-			0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-			0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
 			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+			0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+			0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 		};
 		for (GLuint i = 0; i < sizeVer; ++i) vertices[i] = vertices_tmp[i];
 		delete[] vertices_tmp;
@@ -214,11 +214,11 @@ void Figures::Cube180(GLfloat* vertices, const GLuint sizeVer) {
 	if (sizeVer == 180) {
 		GLfloat* vertices_tmp = new float[180]{
 			// positions          // texture coords 
-			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-			0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
 			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+			0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+			-0.5f, 0.5f, -0.5f,  0.0f, 1.0f,
+			0.5f,  -0.5f, -0.5f,  1.0f, 1.0f,
 			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
 			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
@@ -236,11 +236,11 @@ void Figures::Cube180(GLfloat* vertices, const GLuint sizeVer) {
 			-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
 			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-			0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 			0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+			0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+			0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
 
 			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 			0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
@@ -250,11 +250,11 @@ void Figures::Cube180(GLfloat* vertices, const GLuint sizeVer) {
 			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 
 			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 			-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f
 		};
 		for (GLuint i = 0; i < sizeVer; ++i) vertices[i] = vertices_tmp[i];
 		delete[] vertices_tmp;
@@ -266,10 +266,10 @@ void Figures::Cube192(GLfloat* vertices, const GLuint sizeVer, GLuint* indices, 
 	if (sizeVer == 192 && sizeInd == 36) {
 		GLfloat* vertices_tmp = new float[192]{
 			// positions          // normals			//texture coords
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-			0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
 			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+			 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
 
 			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
 			0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
@@ -282,9 +282,9 @@ void Figures::Cube192(GLfloat* vertices, const GLuint sizeVer, GLuint* indices, 
 			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
 
 			0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-			0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-			0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
 			0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+			0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+			0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
 
 			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
 			0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
@@ -292,9 +292,9 @@ void Figures::Cube192(GLfloat* vertices, const GLuint sizeVer, GLuint* indices, 
 			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
 
 			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-			0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
-			0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
 			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+			0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+			0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f
 		};
 		for (GLuint i = 0; i < sizeVer; ++i) vertices[i] = vertices_tmp[i];
 		delete[] vertices_tmp;
