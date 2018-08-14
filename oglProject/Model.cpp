@@ -13,7 +13,7 @@ void Model::Draw(Shader& shader) {
 void Model::DrawTexModel(
 	Shader& shader,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-	glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, GLint shininessTex,
+	glm::vec3 viewPos, GLint shininessTex,
 	ModelLamps& modelLamps
 ) {
 	glm::mat4 model;
@@ -25,8 +25,6 @@ void Model::DrawTexModel(
 
 	shader.Use();
 	shader.setMat4("model", model);
-	shader.setMat4("view", view);
-	shader.setMat4("projection", projection);
 	shader.setVec3("viewPos", viewPos);
 	//Materials
 	shader.setFloat("material.shininessTex", shininessTex);
@@ -39,7 +37,6 @@ void Model::DrawTexModel(
 void Model::DrawColorModel(
 	Shader& shader,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-	glm::mat4 view, glm::mat4 projection,
 	glm::vec3 inColor
 ) {
 	glm::mat4 model;
@@ -51,8 +48,6 @@ void Model::DrawColorModel(
 
 	shader.Use();
 	shader.setMat4("model", model);
-	shader.setMat4("view", view);
-	shader.setMat4("projection", projection);
 	shader.setVec3("inColor", inColor);
 	this->Draw(shader);
 }
@@ -61,7 +56,7 @@ void Model::DrawMatModel(
 	Materials& material,
 	Shader& shader,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-	glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos,
+	glm::vec3 viewPos,
 	ModelLamps& modelLamps
 ) {
 	glm::mat4 model;
@@ -73,8 +68,6 @@ void Model::DrawMatModel(
 
 	shader.Use();
 	shader.setMat4("model", model);
-	shader.setMat4("view", view);
-	shader.setMat4("projection", projection);
 	shader.setVec3("viewPos", viewPos);
 	//Materials
 	shader.setInt("inIsTex", 0);
@@ -92,7 +85,7 @@ void Model::DrawMatModel(
 void Model::DrawTexModel(
 	Shader& shader,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-	glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, GLint shininessTex,
+	glm::vec3 viewPos, GLint shininessTex,
 	ModelLamps& modelLamps,
 	GLboolean isOutLine, Shader* shaderOutLine, glm::vec3 scaleOutLine, GLfloat rateOutLine, glm::vec3 inColorOutLine
 ) {
@@ -105,7 +98,7 @@ void Model::DrawTexModel(
 		this->DrawTexModel(
 			shader,
 			translate, angleX, angleY, angleZ, scale,
-			view, projection, viewPos, shininessTex,
+			viewPos, shininessTex,
 			modelLamps
 		);
 		if (shaderOutLine) {
@@ -115,7 +108,6 @@ void Model::DrawTexModel(
 			this->drawOutLineModel(
 				shaderOutLine,
 				translate, angleX, angleY, angleZ, scaleOutLine,
-				view, projection,
 				inColorOutLine,
 				rateOutLine
 			);
@@ -128,7 +120,7 @@ void Model::DrawTexModel(
 		this->DrawTexModel(
 			shader,
 			translate, angleX, angleY, angleZ, scale,
-			view, projection, viewPos, shininessTex,
+			viewPos, shininessTex,
 			modelLamps
 		);
 	}
@@ -138,7 +130,6 @@ void Model::DrawTexModel(
 void Model::DrawColorModel(
 	Shader& shader,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-	glm::mat4 view, glm::mat4 projection,
 	glm::vec3 inColor,
 	GLboolean isOutLine, Shader* shaderOutLine, glm::vec3 scaleOutLine, GLfloat rateOutLine, glm::vec3 inColorOutLine
 ) {
@@ -151,7 +142,6 @@ void Model::DrawColorModel(
 		this->DrawColorModel(
 			shader,
 			translate, angleX, angleY, angleZ, scale,
-			view, projection,
 			inColor
 		);
 		if (shaderOutLine) {
@@ -161,7 +151,6 @@ void Model::DrawColorModel(
 			this->drawOutLineModel(
 				shaderOutLine,
 				translate, angleX, angleY, angleZ, scaleOutLine,
-				view, projection,
 				inColorOutLine,
 				rateOutLine
 			);
@@ -174,7 +163,6 @@ void Model::DrawColorModel(
 		this->DrawColorModel(
 			shader,
 			translate, angleX, angleY, angleZ, scale,
-			view, projection,
 			inColor
 		);
 	}
@@ -185,7 +173,7 @@ void Model::DrawMatModel(
 	Materials& material,
 	Shader& shader,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-	glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos,
+	glm::vec3 viewPos,
 	ModelLamps& modelLamps,
 	GLboolean isOutLine, Shader* shaderOutLine, glm::vec3 scaleOutLine, GLfloat rateOutLine, glm::vec3 inColorOutLine
 ) {
@@ -199,7 +187,7 @@ void Model::DrawMatModel(
 			material,
 			shader,
 			translate, angleX, angleY, angleZ, scale,
-			view, projection, viewPos,
+			viewPos,
 			modelLamps
 		);
 		if (shaderOutLine) {
@@ -209,7 +197,6 @@ void Model::DrawMatModel(
 			this->drawOutLineModel(
 				shaderOutLine,
 				translate, angleX, angleY, angleZ, scaleOutLine,
-				view, projection,
 				inColorOutLine,
 				rateOutLine
 			);
@@ -223,7 +210,7 @@ void Model::DrawMatModel(
 			material,
 			shader,
 			translate, angleX, angleY, angleZ, scale,
-			view, projection, viewPos,
+			viewPos,
 			modelLamps
 		);
 	}
@@ -234,7 +221,7 @@ void Model::DrawMatModel(
 void Model::DrawTexModel(
 	Shader& shader,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-	glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, GLint shininessTex,
+	glm::vec3 viewPos, GLint shininessTex,
 	ModelLamps& modelLamps,
 	GLboolean isOutLine
 ) {
@@ -242,7 +229,7 @@ void Model::DrawTexModel(
 		this->DrawTexModel(
 			shader,
 			translate, angleX, angleY, angleZ, scale,
-			view, projection, viewPos, shininessTex,
+			viewPos, shininessTex,
 			modelLamps,
 			isOutLine, nullptr, glm::vec3(0), 0, glm::vec3(0)
 		);
@@ -252,7 +239,6 @@ void Model::DrawTexModel(
 void Model::DrawColorModel(
 	Shader& shader,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-	glm::mat4 view, glm::mat4 projection,
 	glm::vec3 inColor,
 	GLboolean isOutLine
 ) {
@@ -260,7 +246,6 @@ void Model::DrawColorModel(
 		this->DrawColorModel(
 			shader,
 			translate, angleX, angleY, angleZ, scale,
-			view, projection,
 			inColor,
 			isOutLine, nullptr, glm::vec3(0), 0, glm::vec3(0)
 		);
@@ -271,7 +256,7 @@ void Model::DrawMatModel(
 	Materials& material,
 	Shader& shader,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-	glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos,
+	glm::vec3 viewPos,
 	ModelLamps& modelLamps,
 	GLboolean isOutLine
 ) {
@@ -280,7 +265,7 @@ void Model::DrawMatModel(
 			material,
 			shader,
 			translate, angleX, angleY, angleZ, scale,
-			view, projection, viewPos,
+			viewPos,
 			modelLamps,
 			isOutLine, nullptr, glm::vec3(0), 0, glm::vec3(0)
 		);
@@ -290,7 +275,6 @@ void Model::DrawMatModel(
 void Model::drawOutLineModel(
 	Shader* shaderOutLine,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scaleOutLine,
-	glm::mat4 view, glm::mat4 projection,
 	glm::vec3 inColorOutLine,
 	GLfloat rateOutLine
 ) {
@@ -303,8 +287,6 @@ void Model::drawOutLineModel(
 	if (shaderOutLine) {
 		shaderOutLine->Use();
 		shaderOutLine->setMat4("model", model);
-		shaderOutLine->setMat4("view", view);
-		shaderOutLine->setMat4("projection", projection);
 		shaderOutLine->setVec3("inColor", inColorOutLine);
 		shaderOutLine->setFloat("rate", rateOutLine);
 		this->Draw(*shaderOutLine);
@@ -316,7 +298,7 @@ void Model::drawOutLineModel(
 void Model::DrawMirrorModel(
 	Shader& shader,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-	glm::mat4 view, glm::mat4 projection, glm::vec3 cameraPosition,
+	glm::vec3 cameraPosition,
 	GLuint skyboxTexture
 ) {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
@@ -330,8 +312,6 @@ void Model::DrawMirrorModel(
 
 	shader.Use();
 	shader.setMat4("model", model);
-	shader.setMat4("view", view);
-	shader.setMat4("projection", projection);
 	shader.setVec3("cameraPosition", cameraPosition);
 	this->Draw(shader);
 }
@@ -339,7 +319,7 @@ void Model::DrawMirrorModel(
 void Model::DrawPrismModel(
 	Shader& shader,
 	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-	glm::mat4 view, glm::mat4 projection, glm::vec3 cameraPosition,
+	glm::vec3 cameraPosition,
 	GLuint skyboxTexture,
 	GLfloat material1, GLfloat material2
 ) {
@@ -363,8 +343,6 @@ void Model::DrawPrismModel(
 
 	shader.Use();
 	shader.setMat4("model", model);
-	shader.setMat4("view", view);
-	shader.setMat4("projection", projection);
 	shader.setVec3("cameraPosition", cameraPosition);
 	shader.setFloat("material1", material1);
 	shader.setFloat("material2", material2);

@@ -32,14 +32,13 @@ public:
 	void DrawTexModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-		glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, GLint shininessTex,
+		glm::vec3 viewPos, GLint shininessTex,
 		ModelLamps& modelLamps
 	);
 		//with users color
 	void DrawColorModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-		glm::mat4 view, glm::mat4 projection,
 		glm::vec3 inColor
 	);
 		//with material
@@ -47,7 +46,7 @@ public:
 		Materials& material,
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-		glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos,
+		glm::vec3 viewPos,
 		ModelLamps& modelLamps
 	);
 	//with outline
@@ -55,7 +54,7 @@ public:
 	void DrawTexModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-		glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, GLint shininessTex,
+		glm::vec3 viewPos, GLint shininessTex,
 		ModelLamps& modelLamps,
 		GLboolean isOutLine, Shader* shaderOutLine, glm::vec3 scaleOutLine, GLfloat rateOutLine, glm::vec3 inColorOutLine
 	);
@@ -63,7 +62,6 @@ public:
 	void DrawColorModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-		glm::mat4 view, glm::mat4 projection,
 		glm::vec3 inColor,
 		GLboolean isOutLine, Shader* shaderOutLine, glm::vec3 scaleOutLine, GLfloat rateOutLine, glm::vec3 inColorOutLine
 	);
@@ -72,7 +70,7 @@ public:
 		Materials& material,
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-		glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos,
+		glm::vec3 viewPos,
 		ModelLamps& modelLamps,
 		GLboolean isOutLine, Shader* shaderOutLine, glm::vec3 scaleOutLine, GLfloat rateOutLine, glm::vec3 inColorOutLine
 	);
@@ -81,7 +79,7 @@ public:
 	void DrawTexModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-		glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos, GLint shininessTex,
+		glm::vec3 viewPos, GLint shininessTex,
 		ModelLamps& modelLamps,
 		GLboolean isOutLine
 	);
@@ -89,7 +87,6 @@ public:
 	void DrawColorModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-		glm::mat4 view, glm::mat4 projection,
 		glm::vec3 inColor,
 		GLboolean isOutLine
 	);
@@ -98,20 +95,20 @@ public:
 		Materials& material,
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-		glm::mat4 view, glm::mat4 projection, glm::vec3 viewPos,
+		glm::vec3 viewPos,
 		ModelLamps& modelLamps,
 		GLboolean isOutLine
 	);
 	void DrawMirrorModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-		glm::mat4 view, glm::mat4 projection, glm::vec3 cameraPosition,
+		glm::vec3 cameraPosition,
 		GLuint skyboxTexture
 	);
 	void DrawPrismModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
-		glm::mat4 view, glm::mat4 projection, glm::vec3 cameraPosition,
+		glm::vec3 cameraPosition,
 		GLuint skyboxTexture,
 		GLfloat material1, GLfloat material2
 	);
@@ -128,7 +125,6 @@ private:
 	void drawOutLineModel(
 		Shader* shaderOutLine,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scaleOutLine,
-		glm::mat4 view, glm::mat4 projection,
 		glm::vec3 inColorOutLine,
 		GLfloat rateOutLine
 	);

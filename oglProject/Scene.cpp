@@ -62,6 +62,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		windoW(windowPath),
 		grass(grassPath);
 
+	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -81,12 +82,13 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		glm::mat4 view, projection;
 		view = camera.GetViewMatrix();
 		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+		sendUniformBuffer(ubo, projection, view);
 		//floor
 		glDisable(GL_CULL_FACE);
 		floor.DrawTexModel(
 			textureShader,
 			glm::vec3(0.0f, -1.0f, 0.0f), 0, 0, 0, glm::vec3(1.0f),
-			view, projection, camera.Position, 64,
+			camera.Position, 64,
 			modelLamps,
 			false
 		);
@@ -99,7 +101,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 					grass.DrawTexModel(
 						simpleTexGrassShader,
 						glm::vec3(scaleX, -0.7f, scaleZ), 0, angleY, 0, glm::vec3(0.3f),
-						view, projection, camera.Position, 64,
+						camera.Position, 64,
 						modelLamps,
 						false
 					);
@@ -111,7 +113,6 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		sphere.DrawColorModel(
 			simpleShader,
 			dirLamp.position, 0, 0, 0, glm::vec3(1.0f),
-			view, projection,
 			dirLamp.color,
 			false
 		);
@@ -119,7 +120,6 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		sphere.DrawColorModel(
 			simpleShader,
 			pointLamp.position, 0, 0, 0, glm::vec3(0.1f),
-			view, projection,
 			pointLamp.color,
 			false
 		);
@@ -128,7 +128,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		cube.DrawTexModel(
 			textureShader,
 			glm::vec3(1.0f, -0.699f, 0.0f), 0, 0, 0, glm::vec3(0.3f),
-			view, projection, camera.Position, 64,
+			camera.Position, 64,
 			modelLamps,
 			false
 		);
@@ -136,7 +136,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		cube.DrawTexModel(
 			textureShader,
 			glm::vec3(2.0f, -0.699f, -1.0f), 0, 0, 0, glm::vec3(0.3f),
-			view, projection, camera.Position, 64,
+			camera.Position, 64,
 			modelLamps,
 			false
 		);
@@ -144,7 +144,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		nanosuit.DrawTexModel(
 			textureShader,
 			glm::vec3(0.0f, -1.0f, 0.0f), 0, 0, 0, glm::vec3(0.1f),
-			view, projection, camera.Position, 64,
+			camera.Position, 64,
 			modelLamps,
 			true, &normalOutLineShader, glm::vec3(0.1f), 0.1f, glm::vec3(1.0f, 0.5f, 0.0f)
 		);
@@ -159,7 +159,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 			windoW.DrawTexModel(
 				simpleTexShader,
 				it->second, 0, 0, 0, glm::vec3(0.25f),
-				view, projection, camera.Position, 64,
+				camera.Position, 64,
 				modelLamps,
 				false
 			);
@@ -168,6 +168,7 @@ void Scene::DrawScene1(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 
 		glfwSwapBuffers(window);
 	}
+	glDeleteBuffers(1, &ubo);
 }
 
 void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys) {
@@ -233,7 +234,9 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-		
+	
+	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
+
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
@@ -254,12 +257,13 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		glm::mat4 view, projection;
 		view = camera.GetViewMatrix();
 		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+		sendUniformBuffer(ubo, projection, view);
 		//floor
 		glDisable(GL_CULL_FACE);
 		floor.DrawTexModel(
 			textureShader,
 			glm::vec3(0.0f, -1.0f, 0.0f), 0, 0, 0, glm::vec3(1.0f),
-			view, projection, camera.Position, 64,
+			camera.Position, 64,
 			modelLamps,
 			false
 		);
@@ -272,7 +276,7 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 					grass.DrawTexModel(
 						simpleTexGrassShader,
 						glm::vec3(scaleX, -0.7f, scaleZ), 0, angleY, 0, glm::vec3(0.3f),
-						view, projection, camera.Position, 64,
+						camera.Position, 64,
 						modelLamps,
 						false
 					);
@@ -284,7 +288,6 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		sphere.DrawColorModel(
 			simpleShader,
 			dirLamp.position, 0, 0, 0, glm::vec3(1.0f),
-			view, projection,
 			dirLamp.color,
 			false
 		);
@@ -292,7 +295,6 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		sphere.DrawColorModel(
 			simpleShader,
 			pointLamp.position, 0, 0, 0, glm::vec3(0.1f),
-			view, projection,
 			pointLamp.color,
 			false
 		);
@@ -301,7 +303,7 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		cube.DrawTexModel(
 			textureShader,
 			glm::vec3(1.0f, -0.699f, 0.0f), 0, 0, 0, glm::vec3(0.3f),
-			view, projection, camera.Position, 64,
+			camera.Position, 64,
 			modelLamps,
 			false
 		);
@@ -309,7 +311,7 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		cube.DrawTexModel(
 			textureShader,
 			glm::vec3(2.0f, -0.699f, -1.0f), 0, 0, 0, glm::vec3(0.3f),
-			view, projection, camera.Position, 64,
+			camera.Position, 64,
 			modelLamps,
 			false
 		);
@@ -317,7 +319,7 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		nanosuit.DrawTexModel(
 			textureShader,
 			glm::vec3(0.0f, -1.0f, 0.0f), 0, 0, 0, glm::vec3(0.1f),
-			view, projection, camera.Position, 64,
+			camera.Position, 64,
 			modelLamps,
 			true, &normalOutLineShader, glm::vec3(0.1f), 0.1f, glm::vec3(1.0f, 0.5f, 0.0f)
 		);
@@ -332,7 +334,7 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 			windoW.DrawTexModel(
 				simpleTexShader,
 				it->second, 0, 0, 0, glm::vec3(0.25f),
-				view, projection, camera.Position, 64,
+				camera.Position, 64,
 				modelLamps,
 				false
 			);
@@ -352,6 +354,7 @@ void Scene::DrawScene2(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 	}
 	glDeleteVertexArrays(1, &quadVAO);
 	glDeleteBuffers(1, &quadVBO);
+	glDeleteBuffers(1, &ubo);
 }
 
 void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys) {
@@ -388,8 +391,7 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		windoW(windowPath),
 		grass(grassPath);
 
-	//cubeMap
-
+	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -409,12 +411,13 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		glm::mat4 view, projection;
 		view = camera.GetViewMatrix();
 		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+		sendUniformBuffer(ubo, projection, view);
 		//floor
 		glDisable(GL_CULL_FACE);
 		floor.DrawTexModel(
 			textureShader,
 			glm::vec3(0.0f, -1.0f, 0.0f), 0, 0, 0, glm::vec3(1.0f),
-			view, projection, camera.Position, 64,
+			camera.Position, 64,
 			modelLamps,
 			false
 		);
@@ -427,7 +430,7 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 					grass.DrawTexModel(
 						simpleTexGrassShader,
 						glm::vec3(scaleX, -0.7f, scaleZ), 0, angleY, 0, glm::vec3(0.3f),
-						view, projection, camera.Position, 64,
+						camera.Position, 64,
 						modelLamps,
 						false
 					);
@@ -439,7 +442,6 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		sphere.DrawColorModel(
 			simpleShader,
 			dirLamp.position, 0, 0, 0, glm::vec3(1.0f),
-			view, projection,
 			dirLamp.color,
 			false
 		);
@@ -447,7 +449,6 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		sphere.DrawColorModel(
 			simpleShader,
 			pointLamp.position, 0, 0, 0, glm::vec3(0.1f),
-			view, projection,
 			pointLamp.color,
 			false
 		);
@@ -456,7 +457,7 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		cube.DrawTexModel(
 			textureShader,
 			glm::vec3(1.0f, -0.699f, 0.0f), 0, 0, 0, glm::vec3(0.3f),
-			view, projection, camera.Position, 64,
+			camera.Position, 64,
 			modelLamps,
 			false
 		);
@@ -464,7 +465,7 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		cube.DrawTexModel(
 			textureShader,
 			glm::vec3(2.0f, -0.699f, -1.0f), 0, 0, 0, glm::vec3(0.3f),
-			view, projection, camera.Position, 64,
+			camera.Position, 64,
 			modelLamps,
 			false
 		);
@@ -481,7 +482,7 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		cube.DrawMirrorModel(
 			skyMirrorShader,
 			glm::vec3(2.0f, 2.0f, -1.0f), 0, 0, 0, glm::vec3(0.3f),
-			view, projection, camera.Position,
+			camera.Position,
 			sky.GetTexture()
 		);
 //		glDisable(GL_CULL_FACE);
@@ -489,7 +490,7 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		sphere.DrawPrismModel(
 			skyPrismShader,
 			glm::vec3(-2.0f, 2.0f, -1.0f), 0, 0, 0, glm::vec3(0.5f),
-			view, projection, camera.Position,
+			camera.Position,
 			sky.GetTexture(),
 			1, 1.52
 		);
@@ -499,7 +500,7 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		nanosuit.DrawTexModel(
 			textureShader,
 			glm::vec3(0.0f, -1.0f, 0.0f), 0, 0, 0, glm::vec3(0.1f),
-			view, projection, camera.Position, 64,
+			camera.Position, 64,
 			modelLamps,
 			true, &normalOutLineShader, glm::vec3(0.1f), 0.1f, glm::vec3(1.0f, 0.5f, 0.0f)
 		);
@@ -514,7 +515,7 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 			windoW.DrawTexModel(
 				simpleTexShader,
 				it->second, 0, 0, 0, glm::vec3(0.25f),
-				view, projection, camera.Position, 64,
+				camera.Position, 64,
 				modelLamps,
 				false
 			);
@@ -522,6 +523,7 @@ void Scene::DrawScene3(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		glEnable(GL_CULL_FACE);
 		glfwSwapBuffers(window);
 	}
+	glDeleteBuffers(1, &ubo);
 }
 
 void Scene::DrawScene4(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys) {
@@ -672,6 +674,8 @@ void Scene::DrawScene4(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 	glEnableVertexAttribArray(2);
 	glBindVertexArray(0);
 
+	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
+
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
@@ -685,6 +689,7 @@ void Scene::DrawScene4(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		view = camera.GetViewMatrix();
 		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
 
+		sendUniformBuffer(ubo, projection, view);
 
 		sky.DrawSky(
 			skyShader,
@@ -692,8 +697,6 @@ void Scene::DrawScene4(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		);
 		//cube
 		cubeShader.Use();
-		cubeShader.setMat4("projection", projection);
-		cubeShader.setMat4("view", view);
 		glm::mat4 model;
 		model = glm::translate(model, glm::vec3(0));
 		cubeShader.setMat4("model", model);
@@ -707,6 +710,7 @@ void Scene::DrawScene4(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
+	glDeleteBuffers(1, &ubo);
 }
 
 void Scene::DrawScene5(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys) {
