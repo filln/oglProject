@@ -82,6 +82,8 @@ private:
 		*front = "tex/skybox/front.jpg",
 		*back = "tex/skybox/back.jpg";
 
+	GLuint bindUniformBuffer(GLsizeiptr size, GLuint index);
+	void sendUniformBuffer(GLuint ubo, glm::mat4 projection, glm::mat4 view);
 
 	void do_movement(Camera& camera, bool* keys);
 };

@@ -4,6 +4,23 @@ Scene::Scene()
 {
 }
 
+GLuint Scene::bindUniformBuffer(GLsizeiptr size, GLuint index){
+	GLuint ubo;
+	glGenBuffers(1, &ubo);
+	glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+	glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_STATIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	glBindBufferBase(GL_UNIFORM_BUFFER, index, ubo);
+	return ubo;
+}
+
+void Scene::sendUniformBuffer(GLuint ubo, glm::mat4 projection, glm::mat4 view){
+	glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(projection));
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
 void Scene::do_movement(Camera& camera, bool* keys) {
 	GLfloat currentFrame = glfwGetTime();
 	deltaTime = currentFrame - lastFrame;
@@ -855,6 +872,8 @@ void Scene::DrawScene5(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
+	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
+
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
@@ -869,9 +888,9 @@ void Scene::DrawScene5(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		view = camera.GetViewMatrix();
 		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
 
+		sendUniformBuffer(ubo, projection, view);
+
 		pointShader.Use();
-		pointShader.setMat4("projection", projection);
-		pointShader.setMat4("view", view);
 		glm::mat4 model;
 		model = glm::translate(model, glm::vec3(2.0f));
 		pointShader.setMat4("model", model);
@@ -880,8 +899,6 @@ void Scene::DrawScene5(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		glBindVertexArray(0);
 
 		cubeShader.Use();
-		cubeShader.setMat4("projection", projection);
-		cubeShader.setMat4("view", view);
 		glm::mat4 modelCube;
 		modelCube = translate(modelCube, glm::vec3(0));
 		cubeShader.setMat4("model", modelCube);
@@ -895,6 +912,7 @@ void Scene::DrawScene5(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 	glDeleteBuffers(1, &VBO);
 	glDeleteVertexArrays(1, &VAOCube);
 	glDeleteBuffers(1, &VBOCube);
+	glDeleteBuffers(1, &ubo);
 }
 
 
