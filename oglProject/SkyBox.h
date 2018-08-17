@@ -2,15 +2,16 @@
 
 #include <stb/stb_image.h>
 #include "shader.h"
+#include <array>
 
 class SkyBox
 {
 public:
 	SkyBox();
 	SkyBox(
-		const GLchar* positiveX, const GLchar* negativeX,
-		const GLchar* positiveY, const GLchar* negativeY,
-		const GLchar* positiveZ, const GLchar* negativeZ
+		const string& positiveX, const string& negativeX,
+		const string& positiveY, const string& negativeY,
+		const string& positiveZ, const string& negativeZ
 	);
 	void DrawSky(
 		Shader& shader, 
@@ -19,8 +20,8 @@ public:
 	GLuint GetTexture() const;
 	~SkyBox();
 private:
-	const GLchar* faces[6];
-	GLfloat	vertices[72] = {
+	std::array<string, 6> faces;
+	const GLfloat	vertices[72] = {
 		-1.0f,  1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f,
 		 1.0f, -1.0f, -1.0f,
@@ -51,7 +52,7 @@ private:
 		 1.0f, -1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f
 	};
-	GLuint indices[36] = {
+	const GLuint indices[36] = {
 		0, 1, 2,
 		2, 3, 0,
 
@@ -73,6 +74,6 @@ private:
 	GLuint 
 		texture,
 		VAO, VBO, EBO,
-		loadCubemap(const GLchar* faces[], GLuint sizeFaces = 6);
+		loadCubemap(const std::array<string, 6> faces);
 };
 

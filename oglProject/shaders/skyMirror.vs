@@ -7,10 +7,11 @@ out vec3
     Position,
     Normal;
 
-uniform mat4 
-    projection,
-    view,
-    model;
+layout(std140, binding = 0) uniform matrices{
+    mat4 projection;
+    mat4 view;
+};
+uniform mat4 model;
 
 void main(){
     Position = vec3(model * vec4(position, 1.0));

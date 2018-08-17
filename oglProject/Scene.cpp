@@ -530,9 +530,9 @@ void Scene::DrawScene4(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 	camera.FPScam = true;
 	SkyBox sky(right, left, top, bottom, front, back);
 
-	const GLchar
-		*cubeVertexPath = "shaders/4.7/cube.vs",
-		*cubeFragmentPath = "shaders/4.7/cube.fs";
+	const string
+		cubeVertexPath = "shaders/4.7/cube.vs",
+		cubeFragmentPath = "shaders/4.7/cube.fs";
 
 	Shader
 		skyShader(skyVertexPath, skyFragmentPath),
@@ -716,11 +716,11 @@ void Scene::DrawScene4(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 void Scene::DrawScene5(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys) {
 	camera.FPScam = true;
 
-	const GLchar
-		*pointsVertexPath = "shaders/4.8/points.vs",
-		*pointsFragmentPath = "shaders/4.8/points.fs",
-		*cubeVertexPath = "shaders/4.8/cube.vs",
-		*cubeFragmentPath = "shaders/4.8/cube.fs";
+	const string
+		pointsVertexPath = "shaders/4.8/points.vs",
+		pointsFragmentPath = "shaders/4.8/points.fs",
+		cubeVertexPath = "shaders/4.8/cube.vs",
+		cubeFragmentPath = "shaders/4.8/cube.fs";
 
 	Shader
 		pointShader(pointsVertexPath, pointsFragmentPath),
@@ -917,6 +917,34 @@ void Scene::DrawScene5(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 	glDeleteVertexArrays(1, &VAOCube);
 	glDeleteBuffers(1, &VBOCube);
 	glDeleteBuffers(1, &ubo);
+}
+
+void Scene::DrawScene6(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys) {
+	camera.FPScam = true;
+
+
+
+	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
+
+	while (!glfwWindowShouldClose(window)) {
+		glfwPollEvents();
+
+		do_movement(camera, keys);
+
+		glEnable(GL_DEPTH_TEST);
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glm::mat4 view, projection;
+		view = camera.GetViewMatrix();
+		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+
+		sendUniformBuffer(ubo, projection, view);
+
+
+
+		glfwSwapBuffers(window);
+	}
 }
 
 

@@ -1,6 +1,6 @@
 #include "Model.h"
 
-Model::Model(const char* path) {
+Model::Model(const string& path) {
 	loadModel(path);
 }
 
@@ -349,7 +349,7 @@ void Model::DrawPrismModel(
 	this->Draw(shader);
 }
 
-void Model::loadModel(string path) {
+void Model::loadModel(const string& path) {
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
@@ -437,7 +437,7 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type)
 					break;
 				}
 		if (!skip) {
-			texture.id = TextureFromFile(str.C_Str(), this->directory);
+			texture.id = this->textureFromFile(texture.path, this->directory);
 			this->textures_loaded.push_back(texture);
 		}
 		textures.push_back(texture);
@@ -445,9 +445,8 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type)
 	return textures;
 }
 
-GLuint TextureFromFile(const char* path, const string& directory) {
-	string filename = string(path);
-	filename = directory + "/" + filename;
+GLuint Model::textureFromFile(const string& path, const string& directory) {
+	const string filename = directory + "/" + path;
 	GLuint texture;
 	glGenTextures(1, &texture);
 

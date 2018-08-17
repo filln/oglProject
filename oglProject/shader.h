@@ -18,7 +18,8 @@ class Shader
 {
 public:
 	GLuint Program;
-	Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
+	Shader(const string& vertexPath, const string& fragmentPath);
+	Shader(const string& vertexPath, const string& geometryPath, const string& fragmentPath);
 	void Use();
 	void setInt(const GLchar* chName, GLint name);
 	void setFloat(const GLchar* chName, float name);
@@ -30,6 +31,9 @@ public:
 	~Shader();
 private:
 	string
+		vertexCode,
+		geometryCode,
+		fragmentCode,
 		dirLampsCount = "dirLampsCount",
 		pointLampsCount = "pointLampsCount",
 		spotLampsCount = "spotLampsCount",

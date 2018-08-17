@@ -7,8 +7,11 @@ layout (location = 2) in vec2 inTexCoords;
 out vec2 TexCoords;
 out vec3 
 	Normal, FragPos;
-uniform mat4 
-	model, view, projection;
+layout(std140, binding = 0) uniform matrices{
+    mat4 projection;
+    mat4 view;
+};
+uniform mat4 model;
 
 void main(){
 Normal = mat3(transpose(inverse(model))) * normal;

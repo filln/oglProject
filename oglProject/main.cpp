@@ -68,9 +68,10 @@ int main() {
 	Scene scene;
 //	scene.DrawScene1(camera, window, WIDTH, HEIGHT, keys);
 //	scene.DrawScene2(camera, window, WIDTH, HEIGHT, keys);
-//	scene.DrawScene3(camera, window, WIDTH, HEIGHT, keys);
+	scene.DrawScene3(camera, window, WIDTH, HEIGHT, keys);
 //	scene.DrawScene4(camera, window, WIDTH, HEIGHT, keys);
-	scene.DrawScene5(camera, window, WIDTH, HEIGHT, keys);
+//	scene.DrawScene5(camera, window, WIDTH, HEIGHT, keys);
+//	scene.DrawScene6(camera, window, WIDTH, HEIGHT, keys);
 
 	glfwTerminate();
 

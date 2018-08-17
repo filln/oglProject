@@ -16,7 +16,6 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-GLuint TextureFromFile(const char* path, const string& directory);
 struct ModelLamps {
 	Lamps* dirLamps; GLuint dirLampsCount;
 	Lamps* pointLamps; GLuint pointLampsCount;
@@ -25,7 +24,7 @@ struct ModelLamps {
 class Model
 {
 public:
-	Model(const char* path);
+	Model(const string& path);
 	void Draw(Shader& shader);
 	//without outline
 		//with textures
@@ -118,10 +117,11 @@ private:
 	vector<Mesh> meshes;
 	vector<Texture> textures_loaded;
 	string directory;
-	void loadModel(string path);
+	void loadModel(const string& path);
 	void processNode(aiNode* node, const aiScene* scene);
 	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
 	vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type);
+	GLuint textureFromFile(const string& path, const string& directory);
 	void drawOutLineModel(
 		Shader* shaderOutLine,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scaleOutLine,

@@ -7,9 +7,9 @@ SkyBox::SkyBox()
 }
 
 SkyBox::SkyBox(
-	const GLchar* positiveX, const GLchar* negativeX,
-	const GLchar* positiveY, const GLchar* negativeY,
-	const GLchar* positiveZ, const GLchar* negativeZ
+	const string& positiveX, const string& negativeX,
+	const string& positiveY, const string& negativeY,
+	const string& positiveZ, const string& negativeZ
 ) {
 	faces[0] = positiveX;	faces[1] = negativeX;
 	faces[2] = positiveY;   faces[3] = negativeY;
@@ -60,12 +60,7 @@ GLuint SkyBox::GetTexture() const {
 	return this->texture;
 }
 
-GLuint SkyBox::loadCubemap(const GLchar* faces[], GLuint sizeFaces) {
-	if (sizeFaces != 6) {
-		std::cout << "size of faces[] for cubemap must be 6" << std::endl;
-		std::cout << "sizeFaces == "<< sizeFaces << std::endl;
-		return 0;
-	}
+GLuint SkyBox::loadCubemap(const std::array<string, 6> faces) {
 
 	GLuint texture;
 	glGenTextures(1, &texture);
@@ -74,8 +69,8 @@ GLuint SkyBox::loadCubemap(const GLchar* faces[], GLuint sizeFaces) {
 	int
 		texWidth, texHeight,
 		nrComponents;
-	for (GLuint i = 0; i < sizeFaces; i++) {
-		unsigned char* image = stbi_load(faces[i], &texWidth, &texHeight, &nrComponents, 0);
+	for (GLuint i = 0; i < faces.size(); i++) {
+		unsigned char* image = stbi_load((faces[i]).c_str(), &texWidth, &texHeight, &nrComponents, 0);
 		if (image) {
 			GLenum format;
 			if (nrComponents == 1) format = GL_RED;
