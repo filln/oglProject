@@ -916,35 +916,103 @@ void Scene::DrawScene5(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 	glDeleteBuffers(1, &VBO);
 	glDeleteVertexArrays(1, &VAOCube);
 	glDeleteBuffers(1, &VBOCube);
+	glDeleteBuffers(1, &EBOCube);
 	glDeleteBuffers(1, &ubo);
 }
 
 void Scene::DrawScene6(Camera& camera, GLFWwindow *window, const GLuint WIDTH, const GLuint HEIGHT, bool* keys) {
 	camera.FPScam = true;
 
-
+	const string
+		pointsVertexPath = "shaders/4.9/points.vs",
+		pointsGeometryPath = "shaders/4.9/points.gs",
+		pointsFragmentPath = "shaders/4.9/points.fs",
+		nanosuitVertexPath = "shaders/4.9/nanosuit.vs",
+		nanosuitGeometryPath = "shaders/4.9/nanosuit.gs",
+		nanosuitExplGeometryPath = "shaders/4.9/nanosuitExpl.gs",
+		nanosuitFragmentPath = "shaders/4.9/nanosuit.fs",
+		nanosuitNormVertexPath = "shaders/4.9/nanosuitNorm.vs",
+		nanosuitNormGeometryPath = "shaders/4.9/nanosuitNorm.gs",
+		nanosuitNormFragmentPath = "shaders/4.9/nanosuitNorm.fs";
+	Shader
+		pointShader(pointsVertexPath, pointsGeometryPath, pointsFragmentPath),
+		nanosuitShader(nanosuitVertexPath, nanosuitGeometryPath, nanosuitFragmentPath),
+		nanosuitExplShader(nanosuitVertexPath, nanosuitExplGeometryPath, nanosuitFragmentPath);
+		//nanosuitNormShader(nanosuitNormVertexPath, nanosuitNormGeometryPath, nanosuitNormFragmentPath);
+	Model nanosuit(nanosuitPath);
+	GLfloat points[12] = {
+		-0.5f,  0.5f, 0.1,
+		 0.5f,  0.5f, 0.2, 
+		 0.5f, -0.5f, 0.3,
+		-0.5f, -0.5f, 0.4
+	};
+	GLfloat colors[12] = {
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 0.0f
+	};
+	GLuint VAO, VBO;
+	{
+		glGenVertexArrays(1, &VAO);
+		glGenBuffers(1, &VBO);
+		glBindVertexArray(VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(points) + sizeof(colors), nullptr, GL_STATIC_DRAW);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(points), points);
+		glBufferSubData(GL_ARRAY_BUFFER, sizeof(points), sizeof(colors), colors);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), nullptr);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)sizeof(points));
+		glEnableVertexAttribArray(1);
+		glBindVertexArray(0);
+	}
 
 	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
 
+		glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
 		do_movement(camera, keys);
 
-		glEnable(GL_DEPTH_TEST);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glm::mat4 view, projection;
 		view = camera.GetViewMatrix();
 		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
-
 		sendUniformBuffer(ubo, projection, view);
-
-
+		//points
+		pointShader.Use();
+		glm::mat4 model;
+		model = glm::translate(model, glm::vec3(3.0f, 3.0f, 3.0f));
+		pointShader.setMat4("model", model);
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_POINTS, 0, 4);
+		glBindVertexArray(0);
+		//nanosuit
+		nanosuit.DrawTexModel(
+			nanosuitShader,
+			glm::vec3(0), 0, 0, 0, glm::vec3(0.1f)
+		);
+		//nanosuit.DrawTexModel(
+		//	nanosuitNormShader,
+		//	glm::vec3(0), 0, 0, 0, glm::vec3(0.1f)
+		//);
+		nanosuitExplShader.Use();
+		glm::mat4 modelNanosuitExpl;
+		modelNanosuitExpl = glm::translate(modelNanosuitExpl, glm::vec3(2.0f));
+		modelNanosuitExpl = glm::scale(modelNanosuitExpl, glm::vec3(0.1f));
+		nanosuitExplShader.setMat4("model", modelNanosuitExpl);
+		nanosuitExplShader.setFloat("time", glfwGetTime());
+		nanosuit.Draw(nanosuitExplShader);
 
 		glfwSwapBuffers(window);
 	}
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &ubo);
 }
 
 

@@ -8,6 +8,23 @@ void Model::Draw(Shader& shader) {
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 		meshes[i].Draw(shader);
 }
+//without outline&lamps
+void Model::DrawTexModel(
+	Shader& shader,
+	glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale
+) {
+	glm::mat4 model;
+	model = glm::translate(model, translate);
+	if (angleX)	model = glm::rotate(model, glm::radians(angleX), glm::vec3(1.0f, 0.0f, 0.0f));
+	if (angleY)	model = glm::rotate(model, glm::radians(angleY), glm::vec3(0.0f, 1.0f, 0.0f));
+	if (angleZ)	model = glm::rotate(model, glm::radians(angleZ), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::scale(model, scale);
+
+	shader.Use();
+	shader.setMat4("model", model);
+	this->Draw(shader);
+}
+
 //without outline
 //with textures
 void Model::DrawTexModel(

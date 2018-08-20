@@ -26,6 +26,11 @@ class Model
 public:
 	Model(const string& path);
 	void Draw(Shader& shader);
+	//without outline&lamps
+	void DrawTexModel(
+		Shader& shader,
+		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale
+	);
 	//without outline
 		//with textures
 	void DrawTexModel(

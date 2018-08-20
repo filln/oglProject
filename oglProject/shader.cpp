@@ -109,6 +109,7 @@ Shader::Shader(const string& vertexPath, const string& geometryPath, const strin
 	if (!success) {
 		glGetShaderInfoLog(vertex, 512, NULL, infolog);
 		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infolog << std::endl;
+		std::cout << vertexPath << std::endl;
 	}
 
 	geometry = glCreateShader(GL_GEOMETRY_SHADER);
@@ -119,6 +120,7 @@ Shader::Shader(const string& vertexPath, const string& geometryPath, const strin
 	if (!success) {
 		glGetShaderInfoLog(vertex, 512, nullptr, infolog);
 		std::cout << "ERROR::SHADER::GEOMETRY::COMPILATION_FAILED\n" << infolog << std::endl;
+		std::cout << geometryPath << std::endl;
 	}
 
 	fragment = glCreateShader(GL_FRAGMENT_SHADER);
@@ -129,6 +131,7 @@ Shader::Shader(const string& vertexPath, const string& geometryPath, const strin
 	if (!success) {
 		glGetShaderInfoLog(fragment, 512, NULL, infolog);
 		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infolog << std::endl;
+		std::cout << fragmentPath << std::endl;
 	}
 
 	this->Program = glCreateProgram();
@@ -140,6 +143,9 @@ Shader::Shader(const string& vertexPath, const string& geometryPath, const strin
 	if (!success) {
 		glGetProgramInfoLog(this->Program, 512, NULL, infolog);
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infolog << std::endl;
+		std::cout << vertexPath << std::endl;
+		std::cout << geometryPath << std::endl;
+		std::cout << fragmentPath << std::endl;
 	}
 	glDeleteShader(vertex);
 	glDeleteShader(geometry);
