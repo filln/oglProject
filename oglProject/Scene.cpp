@@ -937,8 +937,8 @@ void Scene::DrawScene6(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 	Shader
 		pointShader(pointsVertexPath, pointsGeometryPath, pointsFragmentPath),
 		nanosuitShader(nanosuitVertexPath, nanosuitGeometryPath, nanosuitFragmentPath),
-		nanosuitExplShader(nanosuitVertexPath, nanosuitExplGeometryPath, nanosuitFragmentPath);
-		//nanosuitNormShader(nanosuitNormVertexPath, nanosuitNormGeometryPath, nanosuitNormFragmentPath);
+		nanosuitExplShader(nanosuitVertexPath, nanosuitExplGeometryPath, nanosuitFragmentPath),
+		nanosuitNormShader(nanosuitNormVertexPath, nanosuitNormGeometryPath, nanosuitNormFragmentPath);
 	Model nanosuit(nanosuitPath);
 	GLfloat points[12] = {
 		-0.5f,  0.5f, 0.1,
@@ -996,10 +996,10 @@ void Scene::DrawScene6(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 			nanosuitShader,
 			glm::vec3(0), 0, 0, 0, glm::vec3(0.1f)
 		);
-		//nanosuit.DrawTexModel(
-		//	nanosuitNormShader,
-		//	glm::vec3(0), 0, 0, 0, glm::vec3(0.1f)
-		//);
+		nanosuit.DrawTexModel(
+			nanosuitNormShader,
+			glm::vec3(0), 0, 0, 0, glm::vec3(0.1f)
+		);
 		nanosuitExplShader.Use();
 		glm::mat4 modelNanosuitExpl;
 		modelNanosuitExpl = glm::translate(modelNanosuitExpl, glm::vec3(2.0f));
