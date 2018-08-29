@@ -965,6 +965,7 @@ void Scene::DrawScene6(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)sizeof(points));
 		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
 
@@ -1012,6 +1013,224 @@ void Scene::DrawScene6(Camera& camera, GLFWwindow *window, const GLuint WIDTH, c
 	}
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &ubo);
+}
+
+void Scene::DrawScene7(Camera & camera, GLFWwindow * window, const GLuint WIDTH, const GLuint HEIGHT, bool * keys){
+	camera.FPScam = true;
+
+	string
+		quadVertexPath = "shaders/4.10/quad.vs",
+		quadFragmentPath = "shaders/4.10/quad.fs";
+	Shader quadShader(quadVertexPath, quadFragmentPath);
+
+	GLfloat
+		quad[12] = {
+		-0.05f,  0.05f,
+		0.05f, -0.05f,
+		-0.05f, -0.05f,
+
+		-0.05f,  0.05f,
+		0.05f, -0.05f,
+		0.05f,  0.05f
+	},
+		colors[18] = {
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f,
+
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 1.0f
+	};
+	GLuint VAO, VBO;
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quad) + sizeof(colors), nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quad), quad);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(quad), sizeof(colors), colors);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), nullptr);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)sizeof(quad));
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	std::array<glm::vec2, 900> translations;
+	int index = 0;
+	float offset = 0.1f;
+	for(int y = -30; y < 30; y += 2)
+		for (int x = -30; x < 30; x += 2) {
+			glm::vec2 translation;
+			translation.x = (float)x / 10.0f + offset;
+			translation.y = (float)y / 10.0f + offset;
+			translations[index++] = translation;
+		}
+
+	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
+	glEnable(GL_DEPTH_TEST);
+	while (!glfwWindowShouldClose(window)) {
+		glfwPollEvents();
+
+		do_movement(camera, keys);
+
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glm::mat4 view, projection;
+		view = camera.GetViewMatrix();
+		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+		sendUniformBuffer(ubo, projection, view);
+
+		quadShader.Use();
+		for (GLuint i = 0; i < translations.size(); i++) {
+			quadShader.setVec2(("offsets[" + to_string(i) + "]").c_str(), translations[i]);
+		}
+
+		glBindVertexArray(VAO);
+		glDrawArraysInstanced(GL_TRIANGLES, 0, 6, 900);
+		glBindVertexArray(0);
+
+		glfwSwapBuffers(window);
+	}
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &ubo);
+}
+void Scene::DrawScene8(Camera & camera, GLFWwindow * window, const GLuint WIDTH, const GLuint HEIGHT, bool * keys) {
+	camera.FPScam = true;
+
+	string
+		quadVertexPath = "shaders/4.10/quad1.vs",
+		quadFragmentPath = "shaders/4.10/quad1.fs";
+	Shader quadShader(quadVertexPath, quadFragmentPath);
+
+	GLfloat 
+		quad[12] = {
+		-0.05f,  0.05f,
+		0.05f, -0.05f,
+		-0.05f, -0.05f,
+
+		-0.05f,  0.05f,
+		0.05f, -0.05f,
+		0.05f,  0.05f
+	},
+		colors[18] = {
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f,
+
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 1.0f
+	};
+	std::array<glm::vec2, 100000> translations;
+	int index = 0;
+	float offset = 0.1f;
+	for (int y = -316; y < 316; y += 2)
+		for (int x = -316; x < 316; x += 2) {
+			glm::vec2 translation;
+			translation.x = (float)x / 10.0f + offset;
+			translation.y = (float)y / 10.0f + offset;
+			translations[index++] = translation;
+		}
+	GLuint 
+		VAO, VBO, 
+		translationsVBO;
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &translationsVBO);
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quad) + sizeof(colors), nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quad), quad);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(quad), sizeof(colors), colors);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), nullptr);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)sizeof(quad));
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, translationsVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * translations.size(), translations.data(), GL_STATIC_DRAW);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
+	glVertexAttribDivisor(2, 1);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+
+	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
+//	glEnable(GL_DEPTH_TEST);
+	while (!glfwWindowShouldClose(window)) {
+		glfwPollEvents();
+
+		do_movement(camera, keys);
+
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+//		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glm::mat4 view, projection;
+		view = camera.GetViewMatrix();
+		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+		sendUniformBuffer(ubo, projection, view);
+
+		quadShader.Use();
+		quadShader.setFloat("translationsSize", (float)translations.size());
+		glBindVertexArray(VAO);
+		glDrawArraysInstanced(GL_TRIANGLES, 0, 6, translations.size());
+		glBindVertexArray(0);
+
+		glfwSwapBuffers(window);
+	}
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &translationsVBO);
+	glDeleteBuffers(1, &ubo);
+}
+void Scene::DrawScene9(Camera & camera, GLFWwindow * window, const GLuint WIDTH, const GLuint HEIGHT, bool * keys) {
+	camera.FPScam = true;
+	
+	string
+		planetPath = "tex/planet/planet.obj",
+		rockPath = "tex/rock/rock.obj",
+		planetVertexPath = "shaders/4.10/planet.vs",
+		planetFragmentPath = "shaders/4.10/planet.fs",
+		rockVertexPath = "shaders/4.10/rock.vs",
+		rockFragmentPath = "shaders/4.10/rock.fs";
+
+	Shader
+		planetShader(planetVertexPath, planetFragmentPath),
+		rockShader(rockVertexPath, rockFragmentPath);
+	Model
+		planet(planetPath),
+		rock(rockPath);
+
+
+
+
+	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
+	glEnable(GL_DEPTH_TEST);
+	while (!glfwWindowShouldClose(window)) {
+		glfwPollEvents();
+
+		do_movement(camera, keys);
+
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glm::mat4 view, projection;
+		view = camera.GetViewMatrix();
+		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+		sendUniformBuffer(ubo, projection, view);
+
+
+
+		glfwSwapBuffers(window);
+	}
+	//glDeleteVertexArrays(1, &VAO);
+	//glDeleteBuffers(1, &VBO);
+	//glDeleteBuffers(1, &translationsVBO);
 	glDeleteBuffers(1, &ubo);
 }
 

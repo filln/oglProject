@@ -158,9 +158,11 @@ void Shader::Use() {
 void Shader::setInt(const GLchar* chName, GLint name) {
 	glUniform1i(glGetUniformLocation(this->Program, chName), name);
 }
-
 void Shader::setFloat(const GLchar* chName, float name) {
 	glUniform1f(glGetUniformLocation(this->Program, chName), name);
+}
+void Shader::setVec2(const GLchar* chName, glm::vec2 name) {
+	glUniform2fv(glGetUniformLocation(this->Program, chName), 1, glm::value_ptr(name));
 }
 void Shader::setVec3(const GLchar* chName, glm::vec3 name) {
 	glUniform3fv(glGetUniformLocation(this->Program, chName), 1, glm::value_ptr(name));

@@ -20,7 +20,10 @@ vec3 getNormal(){
 }
 vec4 explode(vec4 position, vec3 normal){
     float magnitude = 20.0;
-    vec3 direction = normal * ( (sin(time * 0.5) + 1.0)/2.0 ) * magnitude;
+    float magnitude1 = 0.5;
+    float speed = ( (sin(time * 0.5) + 1.0)/2.0 );
+    float speed1 = sin(time * 0.15);
+    vec3 direction = normal * speed1 * magnitude1;
     return position + vec4(direction, 0.0);
 }
 
