@@ -1206,9 +1206,65 @@ void Scene::DrawScene9(Camera & camera, GLFWwindow * window, const GLuint WIDTH,
 	Model
 		planet(planetPath),
 		rock(rockPath);
+	
+	glm::vec3 translatePlanet = glm::vec3(0.0f, -3.0f, -70.0f);
+	const GLuint amount = 25000;
+	glm::mat4 *modelMatrices = new glm::mat4[amount];
+	srand(glfwGetTime());
+	float
+		radius = 100.0f,
+		offset = 25.0f;
+	for (GLuint i = 0; i < amount; i++) {
+		glm::mat4 model;
 
+		float
+			x, y, z,
+			angle, displacement, rotateAngle;
 
+		angle = (float)i / (float)amount * 360.0f;
+		displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+		x = sin(angle) * radius + displacement;
+		displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+		y = displacement * 0.4f;
+		displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+		z = cos(angle) * radius + displacement;
+		model = glm::translate(model, glm::vec3(x, y, z));
+		model = glm::translate(model, translatePlanet);
 
+		rotateAngle = (float)(rand() % 360);
+		glm::vec3 rotateVec = glm::vec3(0.4f, 0.6f, 0.8f);
+		model = glm::rotate(model, rotateAngle, rotateVec);
+
+		float scale = (rand() % 20) / 100.0f + 0.05;
+		glm::vec3 scaleVec = glm::vec3(scale);
+		model = glm::scale(model, scaleVec);
+
+		modelMatrices[i] = model;
+	}
+
+	GLuint bufferRocks;
+	glGenBuffers(1, &bufferRocks);
+	glBindBuffer(GL_ARRAY_BUFFER, bufferRocks);
+	glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), modelMatrices, GL_STATIC_DRAW);
+	for (GLuint i = 0; i < rock.meshes.size(); i++) {
+		glBindVertexArray(rock.meshes[i].VAO);
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), nullptr);
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)sizeof(glm::vec4));
+		glEnableVertexAttribArray(5);
+		glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+		glEnableVertexAttribArray(6);
+		glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
+		glVertexAttribDivisor(3, 1);
+		glVertexAttribDivisor(4, 1);
+		glVertexAttribDivisor(5, 1);
+		glVertexAttribDivisor(6, 1);
+
+		glBindVertexArray(0);
+	}
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
 	glEnable(GL_DEPTH_TEST);
@@ -1221,17 +1277,31 @@ void Scene::DrawScene9(Camera & camera, GLFWwindow * window, const GLuint WIDTH,
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glm::mat4 view, projection;
 		view = camera.GetViewMatrix();
-		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 400.0f);
 		sendUniformBuffer(ubo, projection, view);
 
+		planet.DrawTexModel(
+			planetShader,
+			translatePlanet, 90, 0, 0, glm::vec3(4.0f, 4.0f, 4.0f)
+		);
 
+		rockShader.Use();
+		rockShader.setInt("material.texture_diffuse1", 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, rock.textures_loaded[0].id);
+		for (GLuint i = 0; i < rock.meshes.size(); i++) {
+			glBindVertexArray(rock.meshes[i].VAO);
+			glDrawElementsInstanced(GL_TRIANGLES, rock.meshes[i].indices.size(), GL_UNSIGNED_INT, 0, amount);
+			glBindVertexArray(0);
+		}
 
 		glfwSwapBuffers(window);
 	}
 	//glDeleteVertexArrays(1, &VAO);
-	//glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &bufferRocks);
 	//glDeleteBuffers(1, &translationsVBO);
 	glDeleteBuffers(1, &ubo);
+	delete[] modelMatrices;
 }
 
 

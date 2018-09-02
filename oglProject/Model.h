@@ -25,6 +25,8 @@ class Model
 {
 public:
 	Model(const string& path);
+	vector<Mesh> meshes;
+	vector<Texture> textures_loaded;
 	void Draw(Shader& shader);
 	//without outline&lamps
 	void DrawTexModel(
@@ -116,11 +118,12 @@ public:
 		GLuint skyboxTexture,
 		GLfloat material1, GLfloat material2
 	);
+	void DrawRockModel(
+
+	);
 	~Model();
 private:
 	TexTypes texTypes;
-	vector<Mesh> meshes;
-	vector<Texture> textures_loaded;
 	string directory;
 	void loadModel(const string& path);
 	void processNode(aiNode* node, const aiScene* scene);
