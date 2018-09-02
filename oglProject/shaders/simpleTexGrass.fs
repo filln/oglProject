@@ -3,9 +3,12 @@
 in vec2 TexCoords;
 
 out vec4 outColor;
-uniform sampler2D inTexture;
+struct Material{
+  	sampler2D texture_diffuse1;
+};
+uniform Material material;
 void main(){
-	vec4 texture = texture(inTexture, TexCoords);
+	vec4 texture = texture(material.texture_diffuse1, TexCoords);
 	if(texture.a < 0.49) discard;
 	outColor = texture;
 }

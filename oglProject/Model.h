@@ -105,6 +105,7 @@ public:
 		ModelLamps& modelLamps,
 		GLboolean isOutLine
 	);
+	//custom
 	void DrawMirrorModel(
 		Shader& shader,
 		glm::vec3 translate, GLfloat angleX, GLfloat angleY, GLfloat angleZ, glm::vec3 scale,
@@ -118,8 +119,17 @@ public:
 		GLuint skyboxTexture,
 		GLfloat material1, GLfloat material2
 	);
-	void DrawRockModel(
-
+	void GenerateGrass(
+		const GLuint amount,
+		glm::mat4 *modelMatrices,
+		float limitXRight, float limitZRight,
+		float y,
+		float lgthX, float lgthZ,
+		GLuint bufferGrass
+	);
+	void DrawGrassModel(
+		Shader& shader,
+		const GLuint amount
 	);
 	~Model();
 private:

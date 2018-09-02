@@ -1208,12 +1208,12 @@ void Scene::DrawScene9(Camera & camera, GLFWwindow * window, const GLuint WIDTH,
 		rock(rockPath);
 	
 	glm::vec3 translatePlanet = glm::vec3(0.0f, -3.0f, -70.0f);
-	const GLuint amount = 25000;
+	const GLuint amount = 50000;
 	glm::mat4 *modelMatrices = new glm::mat4[amount];
 	srand(glfwGetTime());
 	float
-		radius = 100.0f,
-		offset = 25.0f;
+		radius = 200.0f,
+		offset = 70.0f;
 	for (GLuint i = 0; i < amount; i++) {
 		glm::mat4 model;
 
@@ -1235,7 +1235,7 @@ void Scene::DrawScene9(Camera & camera, GLFWwindow * window, const GLuint WIDTH,
 		glm::vec3 rotateVec = glm::vec3(0.4f, 0.6f, 0.8f);
 		model = glm::rotate(model, rotateAngle, rotateVec);
 
-		float scale = (rand() % 20) / 100.0f + 0.05;
+		float scale = (rand() % 30) / 100.0f + 0.05;
 		glm::vec3 scaleVec = glm::vec3(scale);
 		model = glm::scale(model, scaleVec);
 
@@ -1268,6 +1268,7 @@ void Scene::DrawScene9(Camera & camera, GLFWwindow * window, const GLuint WIDTH,
 
 	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
@@ -1301,6 +1302,147 @@ void Scene::DrawScene9(Camera & camera, GLFWwindow * window, const GLuint WIDTH,
 	glDeleteBuffers(1, &bufferRocks);
 	//glDeleteBuffers(1, &translationsVBO);
 	glDeleteBuffers(1, &ubo);
+	delete[] modelMatrices;
+}
+void Scene::DrawScene10(Camera & camera, GLFWwindow * window, const GLuint WIDTH, const GLuint HEIGHT, bool * keys) {
+	camera.FPScam = true;
+	Lamps
+		dirLamp(glm::vec3(1.2f, 50.0f, -20.0f), glm::vec3(1.0f, 0.98f, 0.75f)),
+		pointLamp(glm::vec3(1.2f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+	ModelLamps modelLamps;
+	modelLamps.dirLamps = &dirLamp;
+	modelLamps.dirLampsCount = 1;
+	modelLamps.pointLamps = &pointLamp;
+	modelLamps.pointLampsCount = 1;
+	modelLamps.spotLamps = nullptr;
+	modelLamps.spotLampsCount = 0;
+
+	string simpleTexGrassVertexPath = "shaders/4.10/simpleTexGrass.vs";
+
+	Shader
+		textureShader(textureVertexPath, textureFragmentPath),
+		lampSphereShader(lampSphereVertexPath, lampSphereFragmentPath),
+		simpleShader(simpleVertexPath, simpleFragmentPath),
+		simpleTexShader(simpleTexVertexPath, simpleTexFragmentPath),
+		simpleTexGrassShader(simpleTexGrassVertexPath, simpleTexGrassFragmentPath),
+		normalOutLineShader(normalOutLineVertexPath, normalOutLineFragmentPath),
+		outLineShader(outLineVertexPath, outLineFragmentPath);
+	Model
+		floor(floorPath),
+		nanosuit(nanosuitPath),
+		sphere(spherePath),
+		cube(cubePath),
+		windoW(windowPath),
+		grass(grassPath);
+
+	const GLuint amount = 10000;
+	glm::mat4 *modelMatrices = 0;
+	GLuint bufferGrass = 0;
+	grass.GenerateGrass(
+		amount,
+		modelMatrices,
+		7.0f, 7.0f,
+		-0.7f,
+		14.0f, 14.0f,
+		bufferGrass
+	);
+
+	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
+	while (!glfwWindowShouldClose(window)) {
+		glfwPollEvents();
+
+		do_movement(camera, keys);
+
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_STENCIL_TEST);
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+		glStencilMask(0);
+		glm::mat4 view, projection;
+		view = camera.GetViewMatrix();
+		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+		sendUniformBuffer(ubo, projection, view);
+		//floor
+		glDisable(GL_CULL_FACE);
+		floor.DrawTexModel(
+			textureShader,
+			glm::vec3(0.0f, -1.0f, 0.0f), 0, 0, 0, glm::vec3(1.0f),
+			camera.Position, 64,
+			modelLamps,
+			false
+		);
+		glEnable(GL_CULL_FACE);
+		//grass
+		grass.DrawGrassModel(
+			simpleTexGrassShader,
+			amount
+		);
+		//dirLamps
+		sphere.DrawColorModel(
+			simpleShader,
+			dirLamp.position, 0, 0, 0, glm::vec3(1.0f),
+			dirLamp.color,
+			false
+		);
+		//pointLamps
+		sphere.DrawColorModel(
+			simpleShader,
+			pointLamp.position, 0, 0, 0, glm::vec3(0.1f),
+			pointLamp.color,
+			false
+		);
+		//cube
+		//#1
+		cube.DrawTexModel(
+			textureShader,
+			glm::vec3(1.0f, -0.699f, 0.0f), 0, 0, 0, glm::vec3(0.3f),
+			camera.Position, 64,
+			modelLamps,
+			false
+		);
+		//#2
+		cube.DrawTexModel(
+			textureShader,
+			glm::vec3(2.0f, -0.699f, -1.0f), 0, 0, 0, glm::vec3(0.3f),
+			camera.Position, 64,
+			modelLamps,
+			false
+		);
+		//nanosuit
+		nanosuit.DrawTexModel(
+			textureShader,
+			glm::vec3(0.0f, -1.0f, 0.0f), 0, 0, 0, glm::vec3(0.1f),
+			camera.Position, 64,
+			modelLamps,
+			true, &normalOutLineShader, glm::vec3(0.1f), 0.1f, glm::vec3(1.0f, 0.5f, 0.0f)
+		);
+		//windows
+		std::map<float, glm::vec3> sorted;
+		for (float scaleX = 0, scaleZ = 1; scaleX >= -2; scaleX -= 0.5f, scaleZ += 0.5f) {
+			float distance = glm::length(camera.Position - glm::vec3(scaleX, -0.75f, scaleZ));
+			sorted[distance] = glm::vec3(scaleX, -0.75f, scaleZ);
+		}
+		glDisable(GL_CULL_FACE);
+		for (auto it = sorted.rbegin(); it != sorted.rend(); it++) {
+			windoW.DrawTexModel(
+				simpleTexShader,
+				it->second, 0, 0, 0, glm::vec3(0.25f),
+				camera.Position, 64,
+				modelLamps,
+				false
+			);
+		}
+		glEnable(GL_CULL_FACE);
+
+		glfwSwapBuffers(window);
+	}
+	glDeleteBuffers(1, &ubo);
+	glDeleteBuffers(1, &bufferGrass);
 	delete[] modelMatrices;
 }
 
