@@ -39,7 +39,7 @@ int main() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	glfwWindowHint(GLFW_SAMPLES, 6);
+//	glfwWindowHint(GLFW_SAMPLES, 6);
 	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Learn OpenGL", nullptr, nullptr);
 	if (window == nullptr) {
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -65,12 +65,12 @@ int main() {
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, width, height);
-	glEnable(GL_MULTISAMPLE);
+//	glEnable(GL_MULTISAMPLE);
 
 	Scene scene;
 //	scene.DrawScene1(camera, window, WIDTH, HEIGHT, keys);
 //	scene.DrawScene2(camera, window, WIDTH, HEIGHT, keys);
-	scene.DrawScene3(camera, window, WIDTH, HEIGHT, keys);
+//	scene.DrawScene3(camera, window, WIDTH, HEIGHT, keys);
 //	scene.DrawScene4(camera, window, WIDTH, HEIGHT, keys);
 //	scene.DrawScene5(camera, window, WIDTH, HEIGHT, keys);
 //	scene.DrawScene6(camera, window, WIDTH, HEIGHT, keys);
@@ -78,7 +78,7 @@ int main() {
 //	scene.DrawScene8(camera, window, WIDTH, HEIGHT, keys);
 //	scene.DrawScene9(camera, window, WIDTH, HEIGHT, keys);
 //	scene.DrawScene10(camera, window, WIDTH, HEIGHT, keys);
-//	scene.DrawScene11(camera, window, WIDTH, HEIGHT, keys);
+	scene.DrawScene11(camera, window, WIDTH, HEIGHT, keys);
 
 	glfwTerminate();
 

@@ -1452,185 +1452,389 @@ void Scene::DrawScene11(Camera& camera, GLFWwindow *window, const GLuint WIDTH, 
 
 	const string
 		cubeVertexPath = "shaders/4.7/cube.vs",
-		cubeFragmentPath = "shaders/4.7/cube.fs";
+		cubeFragmentPath = "shaders/4.7/cube.fs",
+		frameVertexPath = "shaders/4.11/frame.vs",
+		frameFragmentPath = "shaders/4.11/frame.fs";
 
 	Shader
 		skyShader(skyVertexPath, skyFragmentPath),
-		cubeShader(cubeVertexPath, cubeFragmentPath);
+		cubeShader(cubeVertexPath, cubeFragmentPath),
+		frameShader(frameVertexPath, frameFragmentPath);
 
-	std::array<GLfloat, 72> positions = {
-		-0.5f,  0.5f, -0.5f,
-		0.5f,  0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
+	//std::array<GLfloat, 72> positions = {
+	//	-0.5f,  0.5f, -0.5f,
+	//	0.5f,  0.5f, -0.5f,
+	//	0.5f, -0.5f, -0.5f,
+	//	-0.5f, -0.5f, -0.5f,
 
-		-0.5f, -0.5f,  0.5f,
-		0.5f, -0.5f,  0.5f,
-		0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f,  0.5f,
+	//	-0.5f, -0.5f,  0.5f,
+	//	0.5f, -0.5f,  0.5f,
+	//	0.5f,  0.5f,  0.5f,
+	//	-0.5f,  0.5f,  0.5f,
 
-		-0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
-		-0.5f, -0.5f,  0.5f,
+	//	-0.5f,  0.5f,  0.5f,
+	//	-0.5f,  0.5f, -0.5f,
+	//	-0.5f, -0.5f, -0.5f,
+	//	-0.5f, -0.5f,  0.5f,
 
-		0.5f,  0.5f,  0.5f,
-		0.5f, -0.5f,  0.5f,
-		0.5f, -0.5f, -0.5f,
-		0.5f,  0.5f, -0.5f,
+	//	0.5f,  0.5f,  0.5f,
+	//	0.5f, -0.5f,  0.5f,
+	//	0.5f, -0.5f, -0.5f,
+	//	0.5f,  0.5f, -0.5f,
 
-		-0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f,  0.5f,
-		-0.5f, -0.5f,  0.5f,
+	//	-0.5f, -0.5f, -0.5f,
+	//	0.5f, -0.5f, -0.5f,
+	//	0.5f, -0.5f,  0.5f,
+	//	-0.5f, -0.5f,  0.5f,
 
-		-0.5f,  0.5f, -0.5f,
-		-0.5f,  0.5f,  0.5f,
-		0.5f,  0.5f,  0.5f,
-		0.5f,  0.5f, -0.5f
-	};
-	std::array<GLfloat, 72> normals = {
-		0.0f,  0.0f, -1.0f,
-		0.0f,  0.0f, -1.0f,
-		0.0f,  0.0f, -1.0f,
-		0.0f,  0.0f, -1.0f,
+	//	-0.5f,  0.5f, -0.5f,
+	//	-0.5f,  0.5f,  0.5f,
+	//	0.5f,  0.5f,  0.5f,
+	//	0.5f,  0.5f, -0.5f
+	//};
+	//std::array<GLfloat, 72> normals = {
+	//	0.0f,  0.0f, -1.0f,
+	//	0.0f,  0.0f, -1.0f,
+	//	0.0f,  0.0f, -1.0f,
+	//	0.0f,  0.0f, -1.0f,
 
-		0.0f,  0.0f,  1.0f,
-		0.0f,  0.0f,  1.0f,
-		0.0f,  0.0f,  1.0f,
-		0.0f,  0.0f,  1.0f,
+	//	0.0f,  0.0f,  1.0f,
+	//	0.0f,  0.0f,  1.0f,
+	//	0.0f,  0.0f,  1.0f,
+	//	0.0f,  0.0f,  1.0f,
 
-		-1.0f,  0.0f,  0.0f,
-		-1.0f,  0.0f,  0.0f,
-		-1.0f,  0.0f,  0.0f,
-		-1.0f,  0.0f,  0.0f,
+	//	-1.0f,  0.0f,  0.0f,
+	//	-1.0f,  0.0f,  0.0f,
+	//	-1.0f,  0.0f,  0.0f,
+	//	-1.0f,  0.0f,  0.0f,
 
-		1.0f,  0.0f,  0.0f,
-		1.0f,  0.0f,  0.0f,
-		1.0f,  0.0f,  0.0f,
-		1.0f,  0.0f,  0.0f,
+	//	1.0f,  0.0f,  0.0f,
+	//	1.0f,  0.0f,  0.0f,
+	//	1.0f,  0.0f,  0.0f,
+	//	1.0f,  0.0f,  0.0f,
 
-		0.0f, -1.0f,  0.0f,
-		0.0f, -1.0f,  0.0f,
-		0.0f, -1.0f,  0.0f,
-		0.0f, -1.0f,  0.0f,
+	//	0.0f, -1.0f,  0.0f,
+	//	0.0f, -1.0f,  0.0f,
+	//	0.0f, -1.0f,  0.0f,
+	//	0.0f, -1.0f,  0.0f,
 
-		0.0f,  1.0f,  0.0f,
-		0.0f,  1.0f,  0.0f,
-		0.0f,  1.0f,  0.0f,
-		0.0f,  1.0f,  0.0f
-	};
-	std::array<GLfloat, 48> textureCoords = {
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
-		0.0f, 0.0f,
+	//	0.0f,  1.0f,  0.0f,
+	//	0.0f,  1.0f,  0.0f,
+	//	0.0f,  1.0f,  0.0f,
+	//	0.0f,  1.0f,  0.0f
+	//};
+	//std::array<GLfloat, 48> textureCoords = {
+	//	0.0f, 1.0f,
+	//	1.0f, 1.0f,
+	//	1.0f, 0.0f,
+	//	0.0f, 0.0f,
 
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
+	//	0.0f, 0.0f,
+	//	1.0f, 0.0f,
+	//	1.0f, 1.0f,
+	//	0.0f, 1.0f,
 
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f,
+	//	1.0f, 0.0f,
+	//	1.0f, 1.0f,
+	//	0.0f, 1.0f,
+	//	0.0f, 0.0f,
 
-		1.0f, 0.0f,
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
+	//	1.0f, 0.0f,
+	//	0.0f, 0.0f,
+	//	0.0f, 1.0f,
+	//	1.0f, 1.0f,
 
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
-		0.0f, 0.0f,
+	//	0.0f, 1.0f,
+	//	1.0f, 1.0f,
+	//	1.0f, 0.0f,
+	//	0.0f, 0.0f,
 
-		0.0f, 1.0f,
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f
-	};
-	std::array<GLuint, 36> indices = {
-		0, 1, 2,
-		0, 2, 3,
+	//	0.0f, 1.0f,
+	//	0.0f, 0.0f,
+	//	1.0f, 0.0f,
+	//	1.0f, 1.0f
+	//};
+	//std::array<GLuint, 36> indices = {
+	//	0, 1, 2,
+	//	0, 2, 3,
 
-		4, 5, 6,
-		4, 6, 7,
+	//	4, 5, 6,
+	//	4, 6, 7,
 
-		8, 9, 10,
-		8, 10, 11,
+	//	8, 9, 10,
+	//	8, 10, 11,
 
-		12, 13, 14,
-		12, 14, 15,
+	//	12, 13, 14,
+	//	12, 14, 15,
 
-		16, 17, 18,
-		16, 18, 19,
+	//	16, 17, 18,
+	//	16, 18, 19,
 
-		20, 21, 22,
-		20, 22, 23
-	};
+	//	20, 21, 22,
+	//	20, 22, 23
+	//};
 
-	std::array<GLfloat, 8> quadPositions = {
-		-1.0f, -1.0f,
- 		 1.0f, -1.0f,
- 		 1.0f,  1.0f,
-		-1.0f,  1.0f
-	};
-	std::array<GLfloat, 8> quadTextureCoords = {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f
-	};
-	std::array<GLuint, 6> quadIndices = {
-		0, 1, 2,
-		0, 2, 3
-	};
+	//std::array<GLfloat, 8> quadPositions = {
+	//	-1.0f, -1.0f,
+ //		 1.0f, -1.0f,
+ //		 1.0f,  1.0f,
+	//	-1.0f,  1.0f
+	//};
+	//std::array<GLfloat, 8> quadTextureCoords = {
+	//	0.0f, 0.0f,
+	//	1.0f, 0.0f,
+	//	1.0f, 1.0f,
+	//	0.0f, 1.0f
+	//};
+	//std::array<GLuint, 6> quadIndices = {
+	//	0, 1, 2,
+	//	0, 2, 3
+	//};
+	//GLuint
+	//	VAO, VBO, EBO,
+	//	quadVAO, quadVBO, quadEBO;
+
+	//glGenVertexArrays(1, &VAO);
+	//glGenBuffers(1, &VBO);
+	//glGenBuffers(1, &EBO);
+	//glBindVertexArray(VAO);
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(positions) + sizeof(normals) + sizeof(textureCoords), nullptr, GL_STATIC_DRAW);
+	//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(positions), positions.data());
+	//glBufferSubData(GL_ARRAY_BUFFER, sizeof(positions), sizeof(normals), normals.data());
+	//glBufferSubData(GL_ARRAY_BUFFER, sizeof(positions) + sizeof(normals), sizeof(textureCoords), textureCoords.data());
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), nullptr);
+	//glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)sizeof(positions));
+	//glEnableVertexAttribArray(2);
+	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (void*)(sizeof(positions) + sizeof(normals)));
+	//glBindVertexArray(0);
+
+	//glGenVertexArrays(1, &quadVAO);
+	//glGenBuffers(1, &quadVBO);
+	//glGenBuffers(1, &quadEBO);
+	//glBindVertexArray(quadVAO);
+	//glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(quadPositions) + sizeof(quadTextureCoords), nullptr, GL_STATIC_DRAW);
+	//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadPositions), quadPositions.data());
+	//glBufferSubData(GL_ARRAY_BUFFER, sizeof(quadPositions), sizeof(quadTextureCoords), quadTextureCoords.data());
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), nullptr);
+	//glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (void*)sizeof(quadPositions));
+	//glBindVertexArray(0);
+GLfloat
+cubeVertices[] = {
+	-0.5f, -0.5f, -0.5f,
+	0.5f, -0.5f, -0.5f,
+	0.5f,  0.5f, -0.5f,
+	0.5f,  0.5f, -0.5f,
+	-0.5f,  0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f,
+
+	-0.5f, -0.5f,  0.5f,
+	0.5f, -0.5f,  0.5f,
+	0.5f,  0.5f,  0.5f,
+	0.5f,  0.5f,  0.5f,
+	-0.5f,  0.5f,  0.5f,
+	-0.5f, -0.5f,  0.5f,
+
+	-0.5f,  0.5f,  0.5f,
+	-0.5f,  0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f,
+	-0.5f, -0.5f,  0.5f,
+	-0.5f,  0.5f,  0.5f,
+
+	0.5f,  0.5f,  0.5f,
+	0.5f,  0.5f, -0.5f,
+	0.5f, -0.5f, -0.5f,
+	0.5f, -0.5f, -0.5f,
+	0.5f, -0.5f,  0.5f,
+	0.5f,  0.5f,  0.5f,
+
+	-0.5f, -0.5f, -0.5f,
+	0.5f, -0.5f, -0.5f,
+	0.5f, -0.5f,  0.5f,
+	0.5f, -0.5f,  0.5f,
+	-0.5f, -0.5f,  0.5f,
+	-0.5f, -0.5f, -0.5f,
+
+	-0.5f,  0.5f, -0.5f,
+	0.5f,  0.5f, -0.5f,
+	0.5f,  0.5f,  0.5f,
+	0.5f,  0.5f,  0.5f,
+	-0.5f,  0.5f,  0.5f,
+	-0.5f,  0.5f, -0.5f
+},
+normals[72] = {
+	0.0f,  0.0f, -1.0f,
+	0.0f,  0.0f, -1.0f,
+	0.0f,  0.0f, -1.0f,
+	0.0f,  0.0f, -1.0f,
+
+	0.0f,  0.0f,  1.0f,
+	0.0f,  0.0f,  1.0f,
+	0.0f,  0.0f,  1.0f,
+	0.0f,  0.0f,  1.0f,
+
+	-1.0f,  0.0f,  0.0f,
+	-1.0f,  0.0f,  0.0f,
+	-1.0f,  0.0f,  0.0f,
+	-1.0f,  0.0f,  0.0f,
+
+	1.0f,  0.0f,  0.0f,
+	1.0f,  0.0f,  0.0f,
+	1.0f,  0.0f,  0.0f,
+	1.0f,  0.0f,  0.0f,
+
+	0.0f, -1.0f,  0.0f,
+	0.0f, -1.0f,  0.0f,
+	0.0f, -1.0f,  0.0f,
+	0.0f, -1.0f,  0.0f,
+
+	0.0f,  1.0f,  0.0f,
+	0.0f,  1.0f,  0.0f,
+	0.0f,  1.0f,  0.0f,
+	0.0f,  1.0f,  0.0f
+},
+textureCoords[48] = {
+	0.0f, 1.0f,
+	1.0f, 1.0f,
+	1.0f, 0.0f,
+	0.0f, 0.0f,
+
+	0.0f, 0.0f,
+	1.0f, 0.0f,
+	1.0f, 1.0f,
+	0.0f, 1.0f,
+
+	1.0f, 0.0f,
+	1.0f, 1.0f,
+	0.0f, 1.0f,
+	0.0f, 0.0f,
+
+	1.0f, 0.0f,
+	0.0f, 0.0f,
+	0.0f, 1.0f,
+	1.0f, 1.0f,
+
+	0.0f, 1.0f,
+	1.0f, 1.0f,
+	1.0f, 0.0f,
+	0.0f, 0.0f,
+
+	0.0f, 1.0f,
+	0.0f, 0.0f,
+	1.0f, 0.0f,
+	1.0f, 1.0f
+};
+GLuint indices[36] = {
+	0, 1, 2,
+	0, 2, 3,
+
+	4, 5, 6,
+	4, 6, 7,
+
+	8, 9, 10,
+	8, 10, 11,
+
+	12, 13, 14,
+	12, 14, 15,
+
+	16, 17, 18,
+	16, 18, 19,
+
+	20, 21, 22,
+	20, 22, 23
+};
+GLfloat
+quadVertices[] = {
+	-1.0f,  1.0f,  0.0f, 1.0f,
+	-1.0f, -1.0f,  0.0f, 0.0f,
+	1.0f, -1.0f,  1.0f, 0.0f,
+
+	-1.0f,  1.0f,  0.0f, 1.0f,
+	1.0f, -1.0f,  1.0f, 0.0f,
+	1.0f,  1.0f,  1.0f, 1.0f
+},
+quadTextureCoords[8] = {
+	0.0f, 0.0f,
+	1.0f, 0.0f,
+	1.0f, 1.0f,
+	0.0f, 1.0f
+};
+GLuint quadIndices[6] = {
+	0, 1, 2,
+	0, 2, 3
+};
+GLuint
+VAO, VBO, EBO,
+quadVAO, quadVBO, quadEBO;
+
+unsigned int QVAO, cubeVBO;
+glGenVertexArrays(1, &VAO);
+glGenBuffers(1, &cubeVBO);
+glBindVertexArray(VAO);
+glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
+glEnableVertexAttribArray(0);
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+// setup screen VAO
+unsigned int QquadVAO, QquadVBO;
+glGenVertexArrays(1, &quadVAO);
+glGenBuffers(1, &quadVBO);
+glBindVertexArray(quadVAO);
+glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+glEnableVertexAttribArray(0);
+glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+glEnableVertexAttribArray(1);
+glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
 	GLuint
-		VAO, VBO, EBO,
-		quadVAO, quadVBO, quadEBO;
+		fbo, rbo,
+		fboPP;
 
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(positions) + sizeof(normals) + sizeof(textureCoords), nullptr, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(positions), positions.data());
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(positions), sizeof(normals), normals.data());
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(positions) + sizeof(normals), sizeof(textureCoords), textureCoords.data());
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), nullptr);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)sizeof(positions));
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (void*)(sizeof(positions) + sizeof(normals)));
-	glBindVertexArray(0);
+	glGenFramebuffers(1, &fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	GLuint textureFbo;
+	glGenTextures(1, &textureFbo);
+	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, textureFbo);
+	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, WIDTH, HEIGHT, GL_TRUE);
+	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, textureFbo, 0);
+	glGenRenderbuffers(1, &rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, WIDTH, HEIGHT);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	glGenVertexArrays(1, &quadVAO);
-	glGenBuffers(1, &quadVBO);
-	glGenBuffers(1, &quadEBO);
-	glBindVertexArray(quadVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(quadPositions) + sizeof(quadTextureCoords), nullptr, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadPositions), quadPositions.data());
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(quadPositions), sizeof(quadTextureCoords), quadTextureCoords.data());
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), nullptr);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (void*)sizeof(quadPositions));
-	glBindVertexArray(0);
-
-
+	glGenFramebuffers(1, &fboPP);
+	glBindFramebuffer(GL_FRAMEBUFFER, fboPP);
+	GLuint textureFboPP;
+	glGenTextures(1, &textureFboPP);
+	glBindTexture(GL_TEXTURE_2D, textureFboPP);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureFboPP, 0);
+	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	GLuint ubo = bindUniformBuffer(2 * sizeof(glm::mat4), 0);
 
@@ -1639,15 +1843,16 @@ void Scene::DrawScene11(Camera& camera, GLFWwindow *window, const GLuint WIDTH, 
 
 		do_movement(camera, keys);
 
-		glEnable(GL_DEPTH_TEST);
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		glm::mat4 view, projection;
 		view = camera.GetViewMatrix();
 		projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
 
 		sendUniformBuffer(ubo, projection, view);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+		glEnable(GL_DEPTH_TEST);
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		sky.DrawSky(
 			skyShader,
@@ -1658,9 +1863,26 @@ void Scene::DrawScene11(Camera& camera, GLFWwindow *window, const GLuint WIDTH, 
 		glm::mat4 model;
 		model = glm::translate(model, glm::vec3(0));
 		cubeShader.setMat4("model", model);
-
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
+
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboPP);
+		glBlitFramebuffer(0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glDisable(GL_DEPTH_TEST);
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		frameShader.Use();
+		frameShader.setInt("inTexture", 0);
+		glBindVertexArray(quadVAO);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureFboPP);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(0);
 
 		glfwSwapBuffers(window);
@@ -1672,6 +1894,9 @@ void Scene::DrawScene11(Camera& camera, GLFWwindow *window, const GLuint WIDTH, 
 	glDeleteBuffers(1, &quadVBO);
 	glDeleteBuffers(1, &quadEBO);
 	glDeleteBuffers(1, &ubo);
+	glDeleteFramebuffers(1, &fbo);
+	glDeleteRenderbuffers(1, &rbo);
+	glDeleteFramebuffers(1, &fboPP);
 }
 
 
