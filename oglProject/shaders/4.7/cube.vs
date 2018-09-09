@@ -14,5 +14,6 @@ layout(std140, binding = 0) uniform matrices{
 uniform mat4 model;
 
 void main(){
+    TextureCoords = textureCoords;
     gl_Position = projection * view * model * vec4(positions, 1.0);
 }
