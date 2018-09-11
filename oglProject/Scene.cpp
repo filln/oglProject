@@ -1451,14 +1451,19 @@ void Scene::DrawScene11(Camera& camera, GLFWwindow *window, const GLuint WIDTH, 
 	SkyBox sky(right, left, top, bottom, front, back);
 
 	const string
-		cubeVertexPath = "shaders/4.7/cube.vs",
-		cubeFragmentPath = "shaders/4.7/cube.fs",
+		cubeVertexPath = "shaders/4.11/cube.vs",
+		cubeGeometryPath = "shaders/4.11/cube.gs",
+		cubeFragmentPath = "shaders/4.11/cube.fs",
+		cubeNormalVertexPath = "shaders/4.11/cubeNorm.vs",
+		cubeNormalGeometryPath = "shaders/4.11/cubeNorm.gs",
+		cubeNormalFragmentPath = "shaders/4.11/cubeNorm.fs",
 		frameVertexPath = "shaders/4.11/frame.vs",
 		frameFragmentPath = "shaders/4.11/frame.fs";
 
 	Shader
 		skyShader(skyVertexPath, skyFragmentPath),
-		cubeShader(cubeVertexPath, cubeFragmentPath),
+		cubeShader(cubeVertexPath, cubeGeometryPath, cubeFragmentPath),
+		cubeNormalShader(cubeNormalVertexPath, cubeNormalGeometryPath, cubeNormalFragmentPath),
 		frameShader(frameVertexPath, frameFragmentPath);
 
 	std::array<GLfloat, 72> positions = {
@@ -1625,19 +1630,19 @@ void Scene::DrawScene11(Camera& camera, GLFWwindow *window, const GLuint WIDTH, 
 	//};
 
 	GLuint
-		VAO, VBO, EBO,
-		quadVAO, quadVBO, quadEBO;
+		VAO[2], 
+		VIBO[4];
 
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glGenVertexArrays(2, VAO);
+	glGenBuffers(4, VIBO);
+
+	glBindVertexArray(VAO[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, VIBO[0]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(positions) + sizeof(normals) + sizeof(textureCoords), nullptr, GL_STATIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(positions), positions.data());
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(positions), sizeof(normals), normals.data());
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(positions) + sizeof(normals), sizeof(textureCoords), textureCoords.data());
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VIBO[1]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), nullptr);
@@ -1647,15 +1652,12 @@ void Scene::DrawScene11(Camera& camera, GLFWwindow *window, const GLuint WIDTH, 
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (void*)(sizeof(positions) + sizeof(normals)));
 	glBindVertexArray(0);
 
-	glGenVertexArrays(1, &quadVAO);
-	glGenBuffers(1, &quadVBO);
-	glGenBuffers(1, &quadEBO);
-	glBindVertexArray(quadVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+	glBindVertexArray(VAO[1]);
+	glBindBuffer(GL_ARRAY_BUFFER, VIBO[2]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(quadPositions) + sizeof(quadTextureCoords), nullptr, GL_STATIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quadPositions), quadPositions.data());
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(quadPositions), sizeof(quadTextureCoords), quadTextureCoords.data());
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VIBO[3]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), nullptr);
@@ -1664,37 +1666,35 @@ void Scene::DrawScene11(Camera& camera, GLFWwindow *window, const GLuint WIDTH, 
 	glBindVertexArray(0);
 
 	GLuint
-		fbo, rbo,
-		fboPP;
+		fbo[2], rbo,
+		textures[2],
+		samples = 8;
 
-	glGenFramebuffers(1, &fbo);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	GLuint textureFbo;
-	glGenTextures(1, &textureFbo);
-	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, textureFbo);
-	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 8, GL_RGB, WIDTH, HEIGHT, GL_TRUE);
+	glGenFramebuffers(2, fbo);
+	glGenTextures(2, textures);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo[0]);
+	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, textures[0]);
+	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, GL_RGB, WIDTH, HEIGHT, GL_TRUE);
 	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, textureFbo, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, textures[0], 0);
 	glGenRenderbuffers(1, &rbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 8, GL_DEPTH24_STENCIL8, WIDTH, HEIGHT);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_DEPTH24_STENCIL8, WIDTH, HEIGHT);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
-	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	glGenFramebuffers(1, &fboPP);
-	glBindFramebuffer(GL_FRAMEBUFFER, fboPP);
-	GLuint textureFboPP;
-	glGenTextures(1, &textureFboPP);
-	glBindTexture(GL_TEXTURE_2D, textureFboPP);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo[1]);
+	glBindTexture(GL_TEXTURE_2D, textures[1]);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureFboPP, 0);
-	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textures[1], 0);
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -1711,26 +1711,34 @@ void Scene::DrawScene11(Camera& camera, GLFWwindow *window, const GLuint WIDTH, 
 
 		sendUniformBuffer(ubo, projection, view);
 
-		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo[0]);
 		glEnable(GL_DEPTH_TEST);
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		sky.DrawSky(
-			skyShader,
-			glm::mat4(glm::mat3(view)), projection
-		);
+		//sky.DrawSky(
+		//	skyShader,
+		//	glm::mat4(glm::mat3(view)), projection
+		//);
 		//cube
+		cubeNormalShader.Use();
+		glm::mat4 normalModel;
+		normalModel = glm::translate(normalModel, glm::vec3(0));
+		cubeNormalShader.setMat4("model", normalModel);
+		glBindVertexArray(VAO[0]);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 		cubeShader.Use();
 		glm::mat4 model;
 		model = glm::translate(model, glm::vec3(0));
 		cubeShader.setMat4("model", model);
-		glBindVertexArray(VAO);
+		cubeShader.setFloat("time", (float)glfwGetTime());
+		glBindVertexArray(VAO[0]);
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo);
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboPP);
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo[0]);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo[1]);
 		glBlitFramebuffer(0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -1738,24 +1746,19 @@ void Scene::DrawScene11(Camera& camera, GLFWwindow *window, const GLuint WIDTH, 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		frameShader.Use();
-		glBindVertexArray(quadVAO);
-		glBindTexture(GL_TEXTURE_2D, textureFboPP);
+		glBindVertexArray(VAO[1]);
+		glBindTexture(GL_TEXTURE_2D, textures[1]);
 		glDrawElements(GL_TRIANGLES, quadIndices.size(), GL_UNSIGNED_INT, 0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(0);
 
 		glfwSwapBuffers(window);
 	}
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteVertexArrays(1, &quadVAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
-	glDeleteBuffers(1, &quadVBO);
-	glDeleteBuffers(1, &quadEBO);
-	glDeleteBuffers(1, &ubo);
-	glDeleteFramebuffers(1, &fbo);
+	glDeleteVertexArrays(2, VAO);
+	glDeleteBuffers(4, VIBO);
+	glDeleteFramebuffers(2, fbo);
 	glDeleteRenderbuffers(1, &rbo);
-	glDeleteFramebuffers(1, &fboPP);
+	glDeleteBuffers(1, &ubo);
 }
 
 
